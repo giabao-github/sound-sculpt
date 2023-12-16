@@ -1,0 +1,85 @@
+import AnimatedText from '@/components/AnimatedText';
+import Development from '@/components/Development';
+import Genres from '@/components/Genres';
+import Layout from '@/components/Layout';
+import { useInView, useMotionValue, useSpring } from 'framer-motion';
+import Head from 'next/head';
+import { React, useEffect, useRef } from 'react';
+
+const AnimatedNumbers = ({value}) => {
+  const ref = useRef(null);
+
+  const motionValue = useMotionValue(0);
+  const springValue = useSpring(motionValue, { duration: 3000 });
+  const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (isInView) {
+      motionValue.set(value);
+    }
+  }, [isInView, value, motionValue])
+
+  useEffect(() => {
+    springValue.on("change", (latest) => {
+      if (ref.current && latest.toFixed(0) <= value) {
+        ref.current.textContent = latest.toFixed(0);
+      }
+    })
+  }, [springValue, value])
+
+  return <span ref={ref}></span>
+}
+
+function about() {
+  return (
+    <>
+      <Head>
+        <title>SoundSculpt | About Page</title>
+        <meta name='description' content='' />
+      </Head>
+      <main className='flex w-full flex-col items-center justify-center'>
+      <Layout className='pt-16'>
+        <AnimatedText text='A magical music tool!' className='mb-16' />
+        <div className='grid w-full grid-cols-8 gap-16'>
+          <div className='col-span-3 flex flex-col items-start justify-start'>
+            <h2 className='mb-4 text-lg font-bold uppercase text-dark/75'>Introduction</h2>
+            <p className='font-medium'>
+            Welcome to our unique music transformation platform! Here, we breathe life into your musical ideas by transforming your audio files based on your descriptions. Whether it is pop, rock, or jazz, played with guitar or light drums, we have got you covered.
+            </p>
+            <p className='my-4 font-medium'>
+            Our tool is designed with simplicity and efficiency in mind. All you need to do is upload your audio file, provide a description of your desired style, and let our tool do the magic. It is as simple as that!
+            </p>
+            <p className='font-medium'>
+            Experience the joy of creating music like never before. With our platform, you are not just a listener, but an active participant in the music creation process. Join us and let us make music together!
+            </p>
+          </div>
+          <div className='col-span-3 relative h-max rounded-2xl border-2 border-solid border-dark bg-light p-8'>
+            <div className='absolute top-0 -right-3 -z-10 w-[102%] h-[103%] rounded-[2rem] bg-dark' />
+            <img src='/images/arts/illustration.jfif' alt='' className='w-full h-auto rounded-2xl' />
+          </div>
+
+          <div className='col-span-2 flex flex-col items-end justify-between'>
+            <div className='flex flex-col items-end justify-center'>
+              <span className='inline-block text-7xl font-bold'>
+                <AnimatedNumbers value={50} />+
+              </span>
+              <h2 className='text-xl font-medium capitalize text-dark/75'>positive feedback</h2>
+            </div>
+            <div className='flex flex-col items-end justify-center'>
+              <span className='inline-block text-7xl font-bold'>
+                <AnimatedNumbers value={100} />+
+              </span>
+              <h2 className='text-xl font-medium capitalize text-dark/75'>files converted</h2>
+            </div>
+          </div>
+        </div>
+      </Layout>
+
+      <Genres />
+      <Development />
+      </main>
+    </>
+  );
+}
+
+export default about;
