@@ -1,12 +1,8 @@
 import Layout from '@/components/Layout';
 import Head from 'next/head';
-import Image from 'next/image';
-import profilePicture from '../../public/images/profile/developer-pic-1.png';
 import AnimatedText from '@/components/AnimatedText';
 import Link from 'next/link';
 import { LinkArrow } from '@/components/Icons';
-import RotatedText from '@/components/RotatedText';
-import lightBulb from '../../public/images/svgs/miscellaneous_icons_1.svg'
 
 export default function Home() {
   return (
@@ -19,7 +15,6 @@ export default function Home() {
         <Layout className='pt-0'>
           <div className='flex items-center justify-between w-full'>
             <div className='w-1/2'>
-              {/* <Image src={profilePicture} alt='' className='w-full h-auto' /> */}
               <img src='/images/arts/home.png' alt='' className='w-full h-auto' />
             </div>
             <div className='w-1/2 flex flex-col items-center self-center'>
