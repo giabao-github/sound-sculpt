@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useScroll } from 'framer-motion';
 import DevelopementIcons from './DevelopementIcons';
+import Link from 'next/link';
 
 const Details = ({development, subject, link, time, description}) => {
   const ref = useRef(null);
@@ -28,6 +29,7 @@ const Details = ({development, subject, link, time, description}) => {
 
 function Development() {
   const ref = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   const { scrollYProgress } = useScroll(
     {
@@ -53,7 +55,20 @@ function Development() {
             development='Submitted as revised version to' subject='ArXiv' link='https://arxiv.org' time='November 7, 2023' description='In the revised version, MusicGen is described as a single Language Model (LM) that operates over several streams of compressed discrete music representation (i.e. tokens). Unlike prior work, MusicGen is comprised of a single-stage transformer LM together with efficient token interleaving patterns. This eliminates the need for cascading several models.'
           />
           <Details
-            development='Released by' subject='Meta' link='https://www.facebook.com/MetaVietnam' time='November 15, 2023' description='MusicGen is a single-stage auto-regressive Transformer model that is capable of generating high-quality music samples conditioned on text descriptions or audio prompts. It was released as part of AudioCraft, a single-stop code base for all generative audio needs: music, sound effects, and compression after training on raw audio signals.'
+            development='Released by' subject='Meta' link='https://www.facebook.com/MetaVietnam' time='November 15, 2023' 
+            description={
+              <>
+                {'MusicGen is a single-stage auto-regressive Transformer model that is capable of generating high-quality music samples conditioned on text descriptions or audio prompts. It was released as part of '} 
+                <Link 
+                  className={`${isHovered ? 'text-green-600' : ''}`} 
+                  href='https://github.com/facebookresearch/audiocraft'
+                  target='_blank'
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                >AudioCraft</Link>
+                {', a single-stop code base for all generative audio needs: music, sound effects, and compression after training on raw audio signals.'}
+              </>
+            }
           />
         </ul>
       </div>
