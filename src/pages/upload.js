@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout';
 import Uploader from '@/components/Uploader';
 import Head from 'next/head';
-import React from 'react';
+import { React, useState } from 'react';
 
 function upload() {
   return (

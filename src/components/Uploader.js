@@ -3,6 +3,7 @@ import { BsFileEarmarkMusicFill, BsTrashFill, BsPlayCircleFill, BsPauseCircleFil
 import { FaVolumeHigh, FaVolumeXmark } from "react-icons/fa6";
 import Image from 'next/image';
 import uploadImage from '../../public/images/arts/upload.png';
+import AudioContext from '@/AudioContext';
 import * as mm from 'music-metadata-browser';
 
 function Uploader() {
@@ -343,11 +344,12 @@ function Uploader() {
           </> : 
           <>
             <span 
+              title='Click to browse an audio file'
               className='flex flex-col justify-center items-center cursor-pointer' 
               onClick={() => document.querySelector('.input-field').click()}
             >
               <Image className='mb-3' src={uploadImage} alt='' width={160} height={160} />
-              <p className='font-medium'>Browse audio files to upload</p>
+              <p className='font-medium'>Browse or drag an audio file to upload</p>
             </span>
           </>
         }
@@ -355,7 +357,7 @@ function Uploader() {
       <section className='w-2/4 my-3 mx-0 py-4 px-5 flex justify-between items-center rounded-md bg-slate-200'>
         <span className='flex items-center'>
           <BsFileEarmarkMusicFill 
-            title='Change media'
+            title={`${audio ? 'Change media' : 'Browse an audio file'}`}
             color='#1475cf' className='cursor-pointer'
             onClick={() => document.querySelector('.input-field').click()}
           />
@@ -363,15 +365,16 @@ function Uploader() {
           <p className='text-sm'>{fileName}</p>
         </span>
         <BsTrashFill
-            className='cursor-pointer'
-            color='#b22222'
-            onClick={() => {
-              setFileName("No files chosen");
-              setAudio(false);
-              setArtwork(null);
-              document.querySelector('.input-field').value = null;
-            }}
-          />
+          title={`${audio ? 'Delete media' : 'No media to delete'}`}
+          className='cursor-pointer'
+          color='#b22222'
+          onClick={() => {
+            setFileName("No files chosen");
+            setAudio(false);
+            setArtwork(null);
+            document.querySelector('.input-field').value = null;
+          }}
+        />
       </section>
     </main>
   );

@@ -24,8 +24,8 @@ function Logo() {
       <MotionLink 
         href='/' 
         className={
-          `${isHovered ? 'w-48' : 'w-16'} h-16 ${isHovered ? 'px-4' : ''} bg-dark text-light ${montserrat.variable} font-montserrat flex items-center justify-center 
-          rounded-full ${isHovered ? 'text-xxs' : 'text-2xl'} font-bold select-none transition-all duration-500 ease-in-out`}
+          `${isHovered ? 'w-48 px-4 text-xxs' : 'w-16 text-2xl'} h-16 bg-dark text-light ${montserrat.variable} font-montserrat 
+          flex items-center justify-center rounded-full font-bold border border-solid border-transparent dark:border-light select-none transition-all ease-in-out`}
         whileHover={{
           backgroundColor: ["#42A5F5", "#29B6F6", "#2196F3", "#1E88E5", "#1976D2", "#1565C0"],
           transition: {duration: 4, repeat: Infinity}

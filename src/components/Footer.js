@@ -9,7 +9,7 @@ function Footer() {
   const [isFilled, setIsFilled] = useState(false);
 
   return (
-    <footer className='w-full border-t-2 border-solid border-dark font-medium text-lg'>
+    <footer className='w-full border-t-2 border-solid border-dark font-medium text-lg dark:text-light dark:border-light'>
       <Layout className='py-8 flex items-center justify-between'>
         <span>{new Date().getFullYear()} &copy; All Rights Reserved.</span>
         <div className='flex items-center select-none'>
@@ -17,7 +17,7 @@ function Footer() {
           {
             isFilled ? 
             <FaRegHeart
-              className={`text-primary text-2xl px-1 cursor-pointer`}
+              className={`text-primary dark:text-primaryDark text-2xl px-1 cursor-pointer`}
               onClick={() => { 
                 if (!isFilled) {
                   setIsFilled(true)
@@ -27,7 +27,7 @@ function Footer() {
               }}
             /> :
             <FaHeart
-              className={`text-primary text-2xl px-1 cursor-pointer`}
+              className={`text-primary dark:text-primaryDark text-2xl px-1 cursor-pointer`}
               onClick={() => { 
                 if (!isFilled) {
                   setIsFilled(true)
@@ -46,7 +46,7 @@ function Footer() {
         </div>
         <Link 
           href='/' title='Head to top'
-          className={`${isLinkHovered ? 'text-primary' : ''}`}
+          className={`${isLinkHovered ? 'text-primary dark:text-primaryDark' : ''}`}
           onMouseEnter={() => setIsLinkHovered(true)}
           onMouseLeave={() => setIsLinkHovered(false)}
           onClick={(e) => {

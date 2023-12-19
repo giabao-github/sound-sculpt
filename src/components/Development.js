@@ -14,9 +14,9 @@ const Details = ({development, subject, link, time, description}) => {
         transition={{ duration: 0.5, type: 'spring' }}>
         <h3 className='font-bold text-2xl'>
           {development}&nbsp;
-          <a href={link} target='_blank' className='text-primary capitalize'>{subject}</a>
+          <a href={link} target='_blank' className='text-primary dark:text-primaryDark capitalize'>{subject}</a>
         </h3>
-        <span className='capitalize font-medium text-dark/75'>
+        <span className='capitalize font-medium text-dark/75 dark:text-light/75'>
           {time}
         </span>
         <p className='font-medium w-full'>
@@ -43,7 +43,7 @@ function Development() {
       <h2 className='font-bold text-8xl mb-32 w-full text-center'>About MusicGen</h2>
       
       <div ref={ref} className='w-[75%] mx-auto relative'>
-        <motion.div style={{scaleY: scrollYProgress}} className={`absolute left-7 top-[2px] w-[4px] h-full bg-dark origin-top`}/>
+        <motion.div style={{scaleY: scrollYProgress}} className={`absolute left-7 top-[2px] w-[4px] h-full bg-dark dark:bg-light origin-top`}/>
         <ul className='w-full flex flex-col items-start justify-between ml-4'>
           <Details
             development='Introduced and submitted to' subject='ArXiv' link='https://arxiv.org' time='June 8, 2023' description='MusicGen was introduced by Jade Copet, Felix Kreuk, Itai Gat, Tal Remez, David Kant, Gabriel Synnaeve, Yossi Adi, and Alexandre Défossez. The model was submitted to arXiv, an open-access repository of electronic preprints and postprints, on June 8, 2023.'

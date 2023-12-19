@@ -2,8 +2,9 @@ import Link from 'next/link';
 import React from 'react';
 import Logo from './Logo';
 import { useRouter } from 'next/router';
-import { TwitterIcon, GithubIcon, LinkedInIcon, PinterestIcon, DribbbleIcon } from './Icons';
+import { TwitterIcon, GithubIcon, LinkedInIcon, PinterestIcon, DribbbleIcon, SunIcon, MoonIcon } from './Icons';
 import { motion } from 'framer-motion';
+import useThemeSwitcher from './hooks/useThemeSwitcher';
 
 const CustomLink = ({href, title, className=''}) => {
   const router = useRouter();
@@ -13,7 +14,7 @@ const CustomLink = ({href, title, className=''}) => {
       {title}
       <span className={
         `h-[2px] inline-block bg-dark absolute left-1/2 -bottom-0.5 transform -translate-x-1/2 group-hover:w-full 
-        transition-[width] ease duration-300 ${router.asPath === href ? 'w-full' : 'w-0'}`
+        transition-[width] ease duration-300 ${router.asPath === href ? 'w-full' : 'w-0'} dark:bg-light`
       }>
         &nbsp;
       </span>
@@ -22,8 +23,12 @@ const CustomLink = ({href, title, className=''}) => {
 }
 
 function Navbar() {
+  const [mode, setMode] = useThemeSwitcher();
+
   return (
-    <header className='bg-light w-full px-32 py-8 font-medium flex items-center justify-between sticky top-0 z-50 border-b-2 border-solid border-dark'>
+    <header 
+      className='bg-light w-full px-32 py-8 font-medium flex items-center justify-between sticky top-0 z-50 border-b-2 
+      border-solid border-dark dark:text-light dark:bg-dark'>
       <nav>
         <CustomLink href='/' title="Home" className='mr-4'/>
         <CustomLink href='/about' title="About" className='mx-4' />
@@ -41,12 +46,22 @@ function Navbar() {
         <motion.a href='https://www.linkedin.com/in/b%E1%BA%A3o-nguy%E1%BB%85n-6ab64929a' target={'_blank'} className='w-6 mx-3' whileHover={{y: -2}} whileTap={{scale: 0.9}}>
           <LinkedInIcon />
         </motion.a>
-        <motion.a href='https://www.pinterest.com/giabaonguyenworkspace/' target={'_blank'} className='w-6 mx-3' whileHover={{y: -2}} whileTap={{scale: 0.9}}>
+        <motion.a href='https://www.pinterest.com/giabaonguyenworkspace/' target={'_blank'} className='w-6 mx-3 bg-light rounded-full' whileHover={{y: -2}} whileTap={{scale: 0.9}}>
           <PinterestIcon />
         </motion.a>
         <motion.a href='https://dribbble.com/' target={'_blank'} className='w-6 ml-3' whileHover={{y: -2}} whileTap={{scale: 0.9}}>
           <DribbbleIcon />
         </motion.a>
+
+        <button
+          onClick={() => setMode(mode === 'light' ?  'dark' : 'light')}
+          className={`ml-3 flex items-center justify-center rounded-full p-1 ${mode === 'light' ? 'bg-dark text-light' : 'bg-light text-dark'}`}
+        >
+          {
+            mode === 'dark' ?
+            <SunIcon className={'fill-dark'} /> : <MoonIcon className={'fill-dark'} />
+          }
+        </button>
       </nav>
 
       <div className='absolute left-[50%] top-2 translate-x-[-50%]'>
