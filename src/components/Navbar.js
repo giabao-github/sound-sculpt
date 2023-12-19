@@ -32,7 +32,7 @@ function Navbar() {
       <nav>
         <CustomLink href='/' title="Home" className='mr-4'/>
         <CustomLink href='/about' title="About" className='mx-4' />
-        <CustomLink href='/upload' title="Upload Files" className='mx-4' />
+        <CustomLink href='/upload' title="Generate Music" className='mx-4' />
         <CustomLink href='/articles' title="Articles" className='ml-4' />
       </nav>
 
@@ -49,7 +49,7 @@ function Navbar() {
         <motion.a href='https://www.pinterest.com/giabaonguyenworkspace/' target={'_blank'} className='w-6 mx-3 bg-light rounded-full' whileHover={{y: -2}} whileTap={{scale: 0.9}}>
           <PinterestIcon />
         </motion.a>
-        <motion.a href='https://dribbble.com/' target={'_blank'} className='w-6 ml-3' whileHover={{y: -2}} whileTap={{scale: 0.9}}>
+        <motion.a href='https://dribbble.com/' target={'_blank'} className='w-6 mx-3' whileHover={{y: -2}} whileTap={{scale: 0.9}}>
           <DribbbleIcon />
         </motion.a>
 

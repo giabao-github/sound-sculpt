@@ -7,7 +7,7 @@ function upload() {
   return (
     <>
       <Head>
-        <title>SoundSculpt | Upload Files</title>
+        <title>SoundSculpt | Generate Music</title>
         <meta name='description' content='' />
       </Head>
 

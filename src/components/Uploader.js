@@ -1,9 +1,9 @@
 import { React, useRef, useState, useEffect } from 'react';
-import { BsFileEarmarkMusicFill, BsTrashFill, BsPlayCircleFill, BsPauseCircleFill } from "react-icons/bs";
+import { BsFileEarmarkMusicFill, BsTrashFill, BsPlayCircleFill, BsPauseCircleFill, BsRepeat, BsRepeat1 } from "react-icons/bs";
 import { FaVolumeHigh, FaVolumeXmark } from "react-icons/fa6";
 import Image from 'next/image';
 import uploadImage from '../../public/images/arts/upload.png';
-import AudioContext from '@/AudioContext';
+import generateImage from '../../public/images/arts/generate.png';
 import * as mm from 'music-metadata-browser';
 
 function Uploader() {
@@ -16,9 +16,11 @@ function Uploader() {
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [continuePlaying, setContinuePlaying] = useState(false);
+  const [isLooping, setIsLooping] = useState(false);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
   const [displayVolume, setDisplayVolume] = useState(1);
+  const [input, setInput] = useState('');
 
   // Upload files and set artworks
   const handleFileChange = async ({ target: { files } }) => {
@@ -221,6 +223,11 @@ function Uploader() {
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   }
 
+  // Input
+  const handleInputChange = (event) => {
+    setInput(event.target.value);
+  };
+
   // useEffect
   useEffect(() => {
     if (audioRef.current) {
@@ -260,122 +267,180 @@ function Uploader() {
     return () => clearInterval(interval);
   }, [audio]);
 
+  useEffect(() => {
+    if (audio) {
+      document.title = `SoundSculpt | ${fileName.split('.').slice(0, -1).join('.')}`;
+    }
+    else {
+      document.title = 'SoundSculpt | Generate Music';
+    }
+  }, [audio, fileName]);
+  
+
   return (
     <main className='w-full flex flex-col items-center justify-between'>
-      <form 
-        className={`relative h-96 w-2/4 flex flex-col justify-center items-center border-4 ${audio ? 'border-solid' : 'border-dashed'} border-blue-600 rounded-md mb-1 bg-yellow-100`}
-        onDrop={handleDrop}
-        onDragOver={(e) => e.preventDefault()}
-      >
-        <input type='file' accept='audio/*' className='input-field' hidden onChange={handleFileChange} />
-        {
-          audio &&
-            <div className='w-1/5 absolute left-6 top-6 flex items-center'>
-              <button
-                type='button'
-                title={`${isMuted ? 'Turn on sound' : 'Mute'}`}
-                className='text-2xl mr-3 hover:text-primary'
-                onClick={handleMute}
-                onDragStart={(e) => e.preventDefault()}
-              >{isMuted ? <FaVolumeXmark/> : <FaVolumeHigh/>}
-              </button>
-              <div className='volume-control-container w-full h-1 bg-gray-300 cursor-pointer rounded-md relative' onClick={handleVolumeChange}>
-                <div className='volume-bar h-1 bg-blue-500 rounded-md absolute' style={{ width: `${displayVolume * 100}%` }}></div>
+      <div className='w-full flex justify-center flex-wrap'>
+        <form 
+          className={`relative mr-3 h-96 w-2/5 flex flex-col justify-center items-center border-4 ${audio ? 'border-solid' : 'border-dashed'} border-primary dark:border-primaryDark rounded-md mb-1 bg-yellow-100`}
+          onDrop={handleDrop}
+          onDragOver={(e) => e.preventDefault()}
+        >
+          <input type='file' accept='audio/*' className='input-field' hidden onChange={handleFileChange} />
+          {
+            audio ?  
+            <>
+              {
+                artwork ? 
+                <img
+                  title={fileName.split('.').slice(0, -1).join('.')}
+                  className='w-60 h-60 rounded-md cursor-pointer' src={artwork} alt='artwork' 
+                  onClick={() => document.querySelector('.input-field').click()} 
+                /> :
+                <img
+                  title={fileName.split('.').slice(0, -1).join('.')}
+                  className='w-60 h-60 rounded-md cursor-pointer' src='/images/arts/default-artwork.png' alt='artwork'
+                  onClick={() => document.querySelector('.input-field').click()}
+                />
+              }
+              <audio ref={audioRef} src={audio} crossOrigin="anonymous" />
+              <div className='progress-bar-container mt-8 w-4/5 h-1 bg-gray-300 cursor-pointer rounded-md relative' onClick={handleProgressBarClick}>
+                <div className='progress-bar h-1 bg-blue-500 rounded-md absolute' style={{ width: `${progress}%` }}></div>
                 <div 
                   className='h-3 w-3 bg-blue-500 rounded-full absolute -top-1 left-0' 
-                  style={{ left: `calc(${displayVolume * 100}% - 0.5rem)` }}
-                  onMouseDown={handleVolumeMouseDown}
-                  onMouseUp={handleVolumeMouseUp}
+                  style={{ left: `calc(${progress}% - 0.5rem)` }}
+                  onMouseDown={handleProgressMouseDown}
                   onDragStart={(e) => e.preventDefault()}
                 ></div>
               </div>
-            </div>
-        }
-        {
-          audio ?  
-          <>
-            {
-              artwork ? 
-              <img
-                title={fileName.split('.').slice(0, -1).join('.')}
-                className='w-60 h-60 rounded-md cursor-pointer' src={artwork} alt='artwork' 
-                onClick={() => document.querySelector('.input-field').click()} 
-              /> :
-              <img
-                title={fileName.split('.').slice(0, -1).join('.')}
-                className='w-60 h-60 rounded-md cursor-pointer' src='/images/arts/default-artwork.png' alt='artwork'
-                onClick={() => document.querySelector('.input-field').click()}
-              />
-            }
-            <audio ref={audioRef} src={audio} crossOrigin="anonymous" />
-            <div className='progress-bar-container mt-8 w-4/5 h-1 bg-gray-300 cursor-pointer rounded-md relative' onClick={handleProgressBarClick}>
-              <div className='progress-bar h-1 bg-blue-500 rounded-md absolute' style={{ width: `${progress}%` }}></div>
-              <div 
-                className='h-3 w-3 bg-blue-500 rounded-full absolute -top-1 left-0' 
-                style={{ left: `calc(${progress}% - 0.5rem)` }}
-                onMouseDown={handleProgressMouseDown}
-                onDragStart={(e) => e.preventDefault()}
-              ></div>
-            </div>
-            <div className='w-full flex justify-between' draggable='false'>
-              <span 
-                className='w-9 ml-[3.8rem] text-sm mt-1 flex justify-start select-none' 
-                onDragStart={(e) => e.preventDefault()}
-              >{audioRef.current ? formatTime(audioRef.current.currentTime) : '0:00'}</span>
-              {
-                audio && 
-                <button
-                  type='button'
-                  title={`${isPlaying ? 'Pause' : 'Play'}`}
-                  className='text-5xl mt-3 hover:text-primary'
-                  onClick={(e) => { 
-                    e.stopPropagation(); 
-                    handlePlayPause(); 
-                  }}
+              <div className='w-full flex justify-between' draggable='false'>
+                {
+                  audio &&
+                  <div className='w-1/5 absolute left-12 bottom-5 flex items-center'>
+                    <button
+                      type='button'
+                      title={`${isMuted ? 'Turn on sound' : 'Mute'}`}
+                      className='text-xl mr-3 hover:text-primary'
+                      onClick={handleMute}
+                      onDragStart={(e) => e.preventDefault()}
+                    >{isMuted ? <FaVolumeXmark/> : <FaVolumeHigh/>}
+                    </button>
+                    <div className='volume-control-container w-full h-0.5 bg-gray-300 cursor-pointer rounded-md relative' onClick={handleVolumeChange}>
+                      <div className='volume-bar h-0.5 bg-blue-500 rounded-md absolute' style={{ width: `${displayVolume * 100}%` }}></div>
+                      <div 
+                        className='h-2 w-2 bg-blue-500 rounded-full absolute -top-[3px] left-0' 
+                        style={{ left: `calc(${displayVolume * 100}% - 0.4rem)` }}
+                        onMouseDown={handleVolumeMouseDown}
+                        onMouseUp={handleVolumeMouseUp}
+                        onDragStart={(e) => e.preventDefault()}
+                      ></div>
+                    </div>
+                  </div>
+                }
+                <span 
+                  className='w-9 h-5 ml-[3rem] text-sm mt-1 flex justify-start select-none' 
                   onDragStart={(e) => e.preventDefault()}
-                >{isPlaying ? <BsPauseCircleFill/> : <BsPlayCircleFill/>}
+                >{audioRef.current ? formatTime(audioRef.current.currentTime) : '0:00'}</span>
+                {
+                  audio && 
+                  <button
+                    type='button'
+                    title={`${isPlaying ? 'Pause' : 'Play'}`}
+                    className='text-5xl mt-3 hover:text-primary'
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      handlePlayPause(); 
+                    }}
+                    onDragStart={(e) => e.preventDefault()}
+                  >{isPlaying ? <BsPauseCircleFill/> : <BsPlayCircleFill/>}
+                  </button>
+                }
+                <span 
+                  className='w-9 h-5 mr-[3rem] text-sm mt-1 flex justify-end select-none'
+                  onDragStart={(e) => e.preventDefault()}
+                >{audioRef.current ? `-${formatTime(duration - audioRef.current.currentTime)}` : '0:00'}</span>
+                
+                <audio ref={audioRef} src={audio} crossOrigin="anonymous" loop={isLooping} />
+                <button 
+                  type='button'
+                  className={`text-xl mr-3 hover:text-primary ${isLooping ? 'text-primary' : ''} absolute right-9 bottom-5 flex items-center`}
+                  onClick={() => setIsLooping(!isLooping)}
+                >{isLooping ? <BsRepeat1/> : <BsRepeat/>}
                 </button>
-              }
+              </div>
+            </> : 
+            <>
               <span 
-                className='w-9 mr-[3.8rem] text-sm mt-1 flex justify-end select-none'
-                onDragStart={(e) => e.preventDefault()}
-              >{audioRef.current ? `-${formatTime(duration - audioRef.current.currentTime)}` : '0:00'}</span>
-            </div>
-          </> : 
-          <>
-            <span 
-              title='Click to browse an audio file'
-              className='flex flex-col justify-center items-center cursor-pointer' 
+                title='Click to browse an audio file'
+                className='flex flex-col justify-center items-center cursor-pointer' 
+                onClick={() => document.querySelector('.input-field').click()}
+              >
+                <Image className='mb-3' src={uploadImage} alt='' width={160} height={160} />
+                <p className='font-medium'>Browse or drag an audio file to upload</p>
+              </span>
+            </>
+          }
+        </form>
+        <form
+          className='relative h-96 w-2/5 flex flex-col justify-center items-center border-4 border-dashed 
+          border-primary dark:border-primaryDark rounded-md mb-1 bg-yellow-100 ml-2'
+        >
+          <span 
+            title='Generated Music'
+            className='flex flex-col justify-center items-center cursor-pointer' 
+          >
+            <Image className='' src={generateImage} alt='' width={180} height={180} />
+            <p className='font-medium'>Generated Music</p>
+          </span>
+        </form>
+      </div>
+      <div className='w-full flex justify-center flex-wrap my-3'>
+        <section className='relative w-2/5 h-2/5 mr-5 py-3 px-4 flex justify-between items-center rounded-md bg-slate-200'>
+          <span className='flex items-center'>
+            <BsFileEarmarkMusicFill 
+              title={`${audio ? 'Change media' : 'Browse an audio file'}`}
+              color='#1475cf' className='cursor-pointer'
               onClick={() => document.querySelector('.input-field').click()}
-            >
-              <Image className='mb-3' src={uploadImage} alt='' width={160} height={160} />
-              <p className='font-medium'>Browse or drag an audio file to upload</p>
-            </span>
-          </>
-        }
-      </form>
-      <section className='w-2/4 my-3 mx-0 py-4 px-5 flex justify-between items-center rounded-md bg-slate-200'>
-        <span className='flex items-center'>
-          <BsFileEarmarkMusicFill 
-            title={`${audio ? 'Change media' : 'Browse an audio file'}`}
-            color='#1475cf' className='cursor-pointer'
-            onClick={() => document.querySelector('.input-field').click()}
+            />
+            <div className='w-2'></div>
+            <p className='text-sm'>{fileName}</p>
+          </span>
+          <BsTrashFill
+            title={`${audio ? 'Delete media' : 'No media to delete'}`}
+            className='cursor-pointer'
+            color='#b22222'
+            onClick={() => {
+              setFileName("No files chosen");
+              setAudio(false);
+              setArtwork(null);
+              document.querySelector('.input-field').value = null;
+            }}
           />
-          <div className='w-2'></div>
-          <p className='text-sm'>{fileName}</p>
-        </span>
-        <BsTrashFill
-          title={`${audio ? 'Delete media' : 'No media to delete'}`}
-          className='cursor-pointer'
-          color='#b22222'
-          onClick={() => {
-            setFileName("No files chosen");
-            setAudio(false);
-            setArtwork(null);
-            document.querySelector('.input-field').value = null;
-          }}
-        />
-      </section>
+        </section>  
+        <div 
+          className='relative w-2/5 border-[3px] border-gray-300 rounded-md bg-white 
+        focus-within:border-primary dark:focus-within:border-primaryDark'>
+          <textarea
+            title='Describe your music'
+            className='w-full pt-2 px-4 rounded-md border-none resize-none outline-none'
+            placeholder='A light and cheery EDM track, with syncopated drums, airy pads, and strong emotions, at 130 bpm'
+            maxLength={1000}
+            value={input}
+            onChange={handleInputChange}
+            onKeyDown={(e) => {
+              if (e.key === 'Tab') {
+                e.preventDefault();
+                setInput(e.target.placeholder);
+              }
+            }}
+          />
+          <p className='w-full px-4 pb-1 rounded-es-md rounded-ee-md flex justify-end bg-white text-sm text-gray-600'>{`${input.length}/1000`}</p>
+        </div>
+      </div>
+      <button 
+        className='flex items-center bg-dark text-light p-2.5 px-6 mt-3 rounded-lg text-lg font-semibold hover:bg-light hover:text-dark 
+        border-2 border-solid border-transparent hover:border-dark dark:bg-light dark:text-dark hover:dark:bg-dark 
+      hover:dark:text-light hover:dark:border-light'
+      >Generate</button>
     </main>
   );
 }
