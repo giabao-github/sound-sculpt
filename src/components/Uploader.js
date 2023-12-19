@@ -362,6 +362,7 @@ function Uploader() {
                 <audio ref={audioRef} src={audio} crossOrigin="anonymous" loop={isLooping} />
                 <button 
                   type='button'
+                  title={`${isLooping ? 'Loop: Enabled' : 'Loop: Disabled'}`}
                   className={`text-xl mr-3 hover:text-primary ${isLooping ? 'text-primary' : ''} absolute right-9 bottom-5 flex items-center`}
                   onClick={() => setIsLooping(!isLooping)}
                 >{isLooping ? <BsRepeat1/> : <BsRepeat/>}
