@@ -11,7 +11,6 @@ export const theme = {
     fontFamily: {
       inter: ['var(--font-inter)', ...fontFamily.sans],
       mont: ['var(--font-mont)', ...fontFamily.sans],
-      bungee: ['var(--font-bungee-spice)', ...fontFamily.sans],
     },
     colors: {
       dark: "#1b1b1b",
