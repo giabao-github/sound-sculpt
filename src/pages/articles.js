@@ -23,7 +23,7 @@ const MovingImage = ({title, image, link}) => {
   const handleMouse = (event) => {
     imageRef.current.style.display = 'inline-block';
     x.set(event.pageX);
-    y.set(-10);
+    y.set(-4);
   }
 
   const handleMouseLeave = (event) => {
@@ -42,8 +42,8 @@ const MovingImage = ({title, image, link}) => {
       <FramerImage 
         ref={imageRef} src={image} alt={title}
         style={{ x: x, y: y }}
-        initial={{opacity: 0}}
-        whileInView={{opacity: 1, transition: {duration: 0.2}}}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1, transition: {duration: 0.2} }}
         className='w-52 z-10 h-auto hidden absolute rounded-lg' 
       />
     </Link>
@@ -66,7 +66,7 @@ const Article = ({image, title, date, link}) => {
 const FeaturedArticle = ({image, title, time, summary, link}) => {
   return(
     <li className='relative col-span-1 w-full p-4 bg-light dark:bg-dark border border-solid border-dark dark:border-light rounded-2xl'>
-      <div className='absolute top-0 -right-3 -z-10 w-[37rem] h-[52.5rem] rounded-[2rem] bg-dark dark:bg-light rounded-br-3xl' />
+      <div className='absolute top-0 -right-[0.92vw] -z-10 w-[39.7vw] h-[113.8vh] rounded-[2rem] bg-dark dark:bg-light rounded-br-3xl' />
       <Link
         href={link}
         target='_blank'
@@ -115,7 +115,7 @@ function articles() {
             />
           </ul>
           <h2 className='font-bold text-4xl w-full text-center my-16 mt-32 dark:text-light'>All Articles</h2>
-          <ul className='pb-7'>
+          <ul className='pb-8'>
             <Article
               title='Equipping MusicGen with Chord and Rhythm Controls'
               date='November 9, 2023'
