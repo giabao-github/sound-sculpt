@@ -66,7 +66,11 @@ const Article = ({image, title, date, link}) => {
 const FeaturedArticle = ({image, title, time, summary, link}) => {
   return(
     <li className='relative col-span-1 w-full p-4 bg-light dark:bg-dark border border-solid border-dark dark:border-light rounded-2xl'>
+<<<<<<< HEAD
       <div className='absolute top-0 -right-[0.92vw] -z-10 w-[39.7vw] h-[113.8vh] rounded-[2rem] bg-dark dark:bg-light rounded-br-3xl' />
+=======
+      <div className='absolute top-0 -right-[0.75vw] -z-10 w-[39.6vw] h-[120.5vh] rounded-[2rem] bg-dark dark:bg-light rounded-br-3xl' />
+>>>>>>> 841995750f84aa3cafdc013461e25cf4d8ddb4c8
       <Link
         href={link}
         target='_blank'

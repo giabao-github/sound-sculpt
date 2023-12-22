@@ -43,7 +43,11 @@ function Development() {
       <h2 className='font-bold text-8xl mb-32 w-full text-center'>About MusicGen</h2>
       
       <div ref={ref} className='w-[75%] mx-auto relative'>
+<<<<<<< HEAD
         <motion.div style={{scaleY: scrollYProgress}} className={`absolute left-[1.85vw] top-[2px] w-[4px] h-full bg-dark dark:bg-light origin-top`}/>
+=======
+        <motion.div style={{scaleY: scrollYProgress}} className={`absolute left-[2.3vw] top-[2px] w-[4px] h-full bg-dark dark:bg-light origin-top`}/>
+>>>>>>> 841995750f84aa3cafdc013461e25cf4d8ddb4c8
         <ul className='w-full flex flex-col items-start justify-between ml-4'>
           <Details
             development='Introduced and submitted to' subject='ArXiv' link='https://arxiv.org' time='June 8, 2023' description='MusicGen was introduced by Jade Copet, Felix Kreuk, Itai Gat, Tal Remez, David Kant, Gabriel Synnaeve, Yossi Adi, and Alexandre Défossez. The model was submitted to arXiv, an open-access repository of electronic preprints and postprints, on June 8, 2023.'
