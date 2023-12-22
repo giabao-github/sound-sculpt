@@ -355,7 +355,7 @@ function Uploader() {
                   </button>
                 }
                 <span 
-                  className='w-9 h-5 mr-[33rem] text-sm mt-1 flex justify-end select-none dark:text-white'
+                  className='w-9 h-5 mr-[3rem] text-sm mt-1 flex justify-end select-none dark:text-white'
                   onDragStart={(e) => e.preventDefault()}
                 >{audioRef.current ? `-${formatTime(duration - audioRef.current.currentTime)}` : '0:00'}</span>
                 
