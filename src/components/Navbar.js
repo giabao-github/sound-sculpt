@@ -32,7 +32,7 @@ function Navbar() {
       <nav>
         <CustomLink href='/' title="Home" className='mr-4'/>
         <CustomLink href='/about' title="About" className='mx-4' />
-        <CustomLink href='/upload' title="Generate Music" className='mx-4' />
+        <CustomLink href='/generate' title="Generate Music" className='mx-4' />
         <CustomLink href='/articles' title="Articles" className='ml-4' />
       </nav>
 
