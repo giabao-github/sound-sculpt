@@ -1,5 +1,5 @@
-import { React, useRef, useState, useEffect } from 'react';
-import { BsFileEarmarkMusicFill, BsTrashFill, BsPlayCircleFill, BsPauseCircleFill, BsRepeat, BsRepeat1 } from "react-icons/bs";
+import { React, useRef, useState, useEffect, useLayoutEffect } from 'react';
+import { BsFileEarmarkMusicFill, BsTrashFill, BsPlayCircleFill, BsPauseCircleFill, BsRepeat, BsRepeat1, BsCurrencyBitcoin } from "react-icons/bs";
 import { FaVolumeHigh, FaVolumeXmark } from "react-icons/fa6";
 import Image from 'next/image';
 import uploadImage from '../../public/images/arts/upload.png';
@@ -8,12 +8,14 @@ import * as mm from 'music-metadata-browser';
 
 function Uploader() {
   let progressMousedown, volumeMousedown = false;
-  const audioRef = useRef();
+  const audioRef = useRef(null);
+  const animationFrameRef = useRef(null);
   const [audio, setAudio] = useState(null);
   const [fileName, setFileName] = useState("No files chosen");
   const [artwork, setArtwork] = useState(null);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [time, setTime] = useState({ current: 0, remaining: duration });
   const [isPlaying, setIsPlaying] = useState(false);
   const [continuePlaying, setContinuePlaying] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
@@ -61,6 +63,7 @@ function Uploader() {
       if (audioRef.current.paused) {
         if (audioRef.current.currentTime >= audioRef.current.duration) {
           audioRef.current.currentTime = 0;
+          setProgress(0);
         }
         audioRef.current.play();
         setIsPlaying(true);
@@ -218,10 +221,34 @@ function Uploader() {
 
   // Time
   const formatTime = function (seconds) {
+    console.log(`current: ${Math.floor(time.current)}  -  remain: ${Math.floor(time.remaining)}`);
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   }
+
+  const updateTime = () => {
+    if (audioRef.current) {
+      const current = audioRef.current.currentTime;
+      const remaining = audioRef.current.duration - current;
+      setTime({ current, remaining });
+      if (remaining == 0) {
+        setIsPlaying(false);
+      }
+      animationFrameRef.current = requestAnimationFrame(updateTime);
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      if (audioRef.current.currentTime >= audioRef.current.duration) {
+        setIsPlaying(false);
+      }
+      else if (!audioRef.current.paused) {
+        setIsPlaying(true);
+      }
+    }
+  };
 
   // Input
   const handleInputChange = (event) => {
@@ -231,40 +258,37 @@ function Uploader() {
   // useEffect
   useEffect(() => {
     if (audioRef.current) {
+      updateTime();
+      handleTimeUpdate();
       const handleMetadataLoad = () => {
         setDuration(audioRef.current.duration);
       };
       const handleAudioEnd = () => {
         setIsPlaying(false);
       };
-      const handleTimeUpdate = () => {
-        if (audioRef.current && audioRef.current.currentTime >= audioRef.current.duration) {
-          setIsPlaying(false);
-        }
-        else if (audioRef.current && !audioRef.current.paused) {
-          setIsPlaying(true);
-        }
-      };
+
       audioRef.current.addEventListener('loadedmetadata', handleMetadataLoad);
-      audioRef.current.addEventListener('ended', handleAudioEnd);
       audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
+      audioRef.current.addEventListener('ended', handleAudioEnd);
+
+      const interval = setInterval(() => {
+        if (audioRef.current && !isNaN(audioRef.current.duration)) {
+          updateTime();
+          handleTimeUpdate();
+          setProgress((audioRef.current.currentTime / audioRef.current.duration) * 100);
+        }
+      }, 500);
+
       return () => {
         if (audioRef.current) {
           audioRef.current.removeEventListener('loadedmetadata', handleMetadataLoad);
-          audioRef.current.removeEventListener('ended', handleAudioEnd);
           audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+          audioRef.current.removeEventListener('ended', handleAudioEnd);
+          cancelAnimationFrame(animationFrameRef.current);
+          clearInterval(interval)
         }
       };
     }
-  }, [audio]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (audioRef.current && !isNaN(audioRef.current.duration)) {
-        setProgress((audioRef.current.currentTime / audioRef.current.duration) * 100);
-      }
-    }, 500);
-    return () => clearInterval(interval);
   }, [audio]);
 
   useEffect(() => {
@@ -275,7 +299,12 @@ function Uploader() {
       document.title = 'SoundSculpt | Generate Music';
     }
   }, [audio, fileName]);
-  
+
+  useLayoutEffect(() => {
+    if (audioRef.current) {
+      setTime({ current: audioRef.current.currentTime, remaining: audioRef.current.duration - audioRef.current.currentTime })
+    }
+  }, [])
 
   return (
     <main className='w-full flex flex-col items-center justify-between'>
@@ -339,7 +368,9 @@ function Uploader() {
                 <span 
                   className='w-9 h-5 ml-[3rem] text-sm mt-1 flex justify-start select-none dark:text-white' 
                   onDragStart={(e) => e.preventDefault()}
-                >{audioRef.current ? formatTime(audioRef.current.currentTime) : '0:00'}</span>
+                >
+                { audioRef.current ? formatTime(time.current) : '0:00' }
+                </span>
                 {
                   audio && 
                   <button
@@ -357,7 +388,9 @@ function Uploader() {
                 <span 
                   className='w-9 h-5 mr-[3rem] text-sm mt-1 flex justify-end select-none dark:text-white'
                   onDragStart={(e) => e.preventDefault()}
-                >{audioRef.current ? `-${formatTime(duration - audioRef.current.currentTime)}` : '0:00'}</span>
+                >
+                { audioRef.current ? formatTime(time.remaining) : '0:00' }
+                </span>
                 
                 <audio ref={audioRef} src={audio} crossOrigin="anonymous" loop={isLooping} />
                 <button 
