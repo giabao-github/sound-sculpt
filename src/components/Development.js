@@ -6,20 +6,20 @@ import Link from 'next/link';
 const Details = ({development, subject, link, time, description}) => {
   const ref = useRef(null);
   return (
-    <li ref={ref} className='my-8 first:mt-0 last:mb-0 w-[60%] mx-auto flex flex-col items-center justify-between'>
+    <li ref={ref} className='my-8 first:mt-0 last:mb-0 w-[60%] md:w-[80%] mx-auto flex flex-col items-center justify-between'>
       <DevelopementIcons reference={ref} />
       <motion.div
         initial={{ y: 50 }}
         whileInView={{ y: 0 }}
         transition={{ duration: 0.5, type: 'spring' }}>
-        <h3 className='font-bold text-2xl'>
+        <h3 className='font-bold text-2xl sm:text-xl xs:text-lg'>
           {development}&nbsp;
           <a href={link} target='_blank' className='text-primary dark:text-primaryDark capitalize'>{subject}</a>
         </h3>
-        <span className='capitalize font-medium text-dark/75 dark:text-light/75'>
+        <span className='capitalize font-medium text-dark/75 dark:text-light/75 xs:text-sm'>
           {time}
         </span>
-        <p className='font-medium w-full'>
+        <p className='font-medium w-full md:text-sm'>
           {description}
         </p>
       </motion.div>
@@ -40,11 +40,14 @@ function Development() {
 
   return (
     <div className='my-64'>
-      <h2 className='font-bold text-8xl mb-32 w-full text-center'>About MusicGen</h2>
+      <h2 className='font-bold text-8xl mb-32 w-full text-center md:text-6xl xs:text-4xl md:mb-16'>About MusicGen</h2>
       
-      <div ref={ref} className='w-[75%] mx-auto relative'>
-        <motion.div style={{scaleY: scrollYProgress}} className={`absolute left-[1.85vw] top-[2px] w-[4px] h-full bg-dark dark:bg-light origin-top`}/>
-        <ul className='w-full flex flex-col items-start justify-between ml-4'>
+      <div ref={ref} className='w-[75%] lg:w-[90%] md:w-full mx-auto relative'>
+        <motion.div 
+          style={{scaleY: scrollYProgress}} 
+          className={`absolute left-7 md:left-[30px] top-[2px] w-[4px] md:w-[2px] h-full bg-dark dark:bg-light origin-top xs:hidden`}
+        />
+        <ul className='w-full flex flex-col items-start justify-between ml-4 xs:ml-2'>
           <Details
             development='Introduced and submitted to' subject='ArXiv' link='https://arxiv.org' time='June 8, 2023' description='MusicGen was introduced by Jade Copet, Felix Kreuk, Itai Gat, Tal Remez, David Kant, Gabriel Synnaeve, Yossi Adi, and Alexandre Défossez. The model was submitted to arXiv, an open-access repository of electronic preprints and postprints, on June 8, 2023.'
           />

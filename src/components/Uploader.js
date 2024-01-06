@@ -409,7 +409,7 @@ function Uploader() {
                 onClick={() => document.querySelector('.input-field').click()}
               >
                 <Image className='mb-3 pb-2 dark:filter dark:invert' src={uploadImage} alt='' width={160} height={160} />
-                <p className='font-medium'>Browse or drag an audio file to upload</p>
+                <p className='font-medium 1.25xl:text-[0.95rem] 0.75xl:text-[0.9rem] 0.5xl:text-[0.85rem] 0.25xl:hidden'>Browse or drag an audio file to upload</p>
               </span>
             </>
           }
@@ -423,7 +423,7 @@ function Uploader() {
             className='flex flex-col justify-center items-center cursor-pointer dark:text-white' 
           >
             <Image className='dark:filter dark:invert' src={generateImage} alt='' width={180} height={180} />
-            <p className='font-medium mt-1'>Generated Music</p>
+            <p className='font-medium mt-1 1.25xl:text-[0.95rem] 0.75xl:text-[0.9rem] 0.5xl:text-[0.85rem] 0.25xl:hidden'>Generated Music</p>
           </span>
         </form>
       </div>
@@ -432,15 +432,15 @@ function Uploader() {
           <span className='flex items-center'>
             <BsFileEarmarkMusicFill 
               title={`${audio ? 'Change media' : 'Browse an audio file'}`}
-              className='cursor-pointer text-[#1475cf] dark:text-[#3399ff]'
+              className='cursor-pointer text-[#1475cf] dark:text-[#3399ff] xl:text-xs'
               onClick={() => document.querySelector('.input-field').click()}
             />
             <div className='w-2'></div>
-            <p className='text-sm'>{fileName}</p>
+            <p className='text-sm xl:text-xs'>{fileName}</p>
           </span>
           <BsTrashFill
             title={`${audio ? 'Delete media' : 'No media to delete'}`}
-            className='cursor-pointer text-[#b22222] dark:text-[#d32f2f]'
+            className='cursor-pointer text-[#b22222] dark:text-[#d32f2f] xl:text-xs'
             onClick={() => {
               setFileName("No files chosen");
               setAudio(false);
@@ -454,7 +454,7 @@ function Uploader() {
           bg-white dark:bg-[#242424] focus-within:border-primary dark:focus-within:border-primaryDark'>
           <textarea
             title='Describe your music'
-            className='w-full pt-2 px-4 rounded-md border-none resize-none outline-none font-medium dark:bg-[#242424] dark:text-white dark:placeholder:text-gray-500'
+            className='w-full pt-2 px-4 rounded-md border-none resize-none outline-none font-medium dark:bg-[#242424] dark:text-white dark:placeholder:text-gray-500 1.5xl:text-sm'
             placeholder='A light and cheery EDM track, with syncopated drums, airy pads, and strong emotions, at 130 bpm'
             maxLength={1000}
             value={input}
@@ -468,14 +468,14 @@ function Uploader() {
           />
           <p 
             className='w-full px-4 pb-1 rounded-es-md rounded-ee-md flex justify-end 
-            bg-white dark:bg-[#242424] text-sm text-dark/75 dark:text-light/75'
+            bg-white dark:bg-[#242424] text-sm 1.5xl:text-xs text-dark/75 dark:text-light/75'
           >{`${input.length}/1000`}</p>
         </div>
       </div>
       <button 
         className='flex items-center bg-dark text-light p-2.5 px-6 mt-3 rounded-lg text-lg font-semibold hover:bg-light hover:text-dark 
         border-2 border-solid border-transparent hover:border-dark dark:bg-light dark:text-dark hover:dark:bg-dark 
-      hover:dark:text-light hover:dark:border-light'
+      hover:dark:text-light hover:dark:border-light 0.75xl:text-base md:text-sm'
       >Generate</button>
     </main>
   );

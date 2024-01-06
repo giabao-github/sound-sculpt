@@ -1,7 +1,7 @@
-from flask import Flask, request, send_from_directory
-from pydub import AudioSegment
-import torch
-import librosa
+from flask import Flask, request, send_from_directory, jsonify
+from werkzeug.utils import secure_filename
+from transformers import AutoTokenizer, AutoModel
+import os
 import soundfile as sf
 
 app = Flask(__name__, static_folder='src/pages')
@@ -10,42 +10,8 @@ app = Flask(__name__, static_folder='src/pages')
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 
 # Load your PyTorch model
-model = torch.load(open('models/model.pt', 'rb'))
-
-def convert_audio_to_tensor(audio):
-  audio_data, sr = librosa.load(audio, sr=None)
-  return torch.from_numpy(audio_data)
-
-def convert_description_to_tensor(description):
-  return torch.tensor([0])
-
-def convert_tensor_to_audio(generated_audio_tensor):
-  return generated_audio_tensor.numpy()
-
-def save_audio_to_file(generated_audio, filename):
-  # Convert the audio data to an AudioSegment
-  generated_audio_segment = AudioSegment(
-    # raw audio data (bytes)
-    data=generated_audio.tobytes(),
-    
-    # 2 byte (16 bit) samples
-    sample_width=2,
-    
-    # 44100 frames per second
-    frame_rate=44100,
-    
-    # stereo sound
-    channels=2
-  )
-  
-  # Check the file extension
-  file_extension = filename.rsplit('.', 1)[-1]
-  if file_extension.lower() == 'mp3':
-    # Export as MP3 (require lame encoder to be installed)
-    generated_audio_segment.export(filename, format='mp3')
-  else:
-    # Export as other formats
-    generated_audio_segment.export(filename, format=file_extension)
+tokenizer = AutoTokenizer.from_pretrained("facebook/musicgen")
+model = AutoModel.from_pretrained("facebook/musicgen")
 
 @app.route('/', defaults = {'path': ''})
 
@@ -69,25 +35,27 @@ def generate():
   audio = request.files['audio']
   description = request.form['description']
   
-  # Extract the original filename
-  original_filename, file_extension = os.path.splitext(audio.filename)
+  filename = secure_filename(audio.filename)
+  audio.save(filename)
   
   try:
-    # Convert your audio data and description into tensors
-    audio_tensor = convert_audio_to_tensor(audio)
-    description_tensor = convert_description_to_tensor(description)
+    # Load the audio file
+    audio, sampling_rate = sf.read(filename)
     
-    # Apply your model to the audio and description tensors
-    generated_audio_tensor = model(audio_tensor, description_tensor)
+    # Use the tokenizer to prepare the prompt and audio for the model
+    inputs = tokenizer(description, audio=audio, sampling_rate=sampling_rate, return_tensors='pt')
     
-    # Convert the generated audio tensor back into an audio file
-    generated_audio = convert_tensor_to_audio(generated_audio_tensor)
+    # Generate music using the model
+    outputs = model.generate(inputs.input_ids)
     
-    # Save the generated audio to a file and return its filename
-    filename = f'{original_filename} (generated){file_extension}'
-    save_audio_to_file(generated_audio, filename)
+    # Decode the outputs into a format that can be returned to the user
+    generated_music = tokenizer.decode(outputs[0])
     
-    return {'filename': filename}
+    # Delete the audio file
+    os.remove(filename)
+    
+    # Return the generated music
+    return jsonify({'generated_music': generated_music})
   except Exception as e:
     # Return the error message if there's an error when applying the model
     return {'error': str(e)}, 500

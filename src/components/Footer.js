@@ -9,10 +9,12 @@ function Footer() {
   const [isFilled, setIsFilled] = useState(false);
 
   return (
-    <footer className='w-full border-t-2 border-solid border-dark font-medium text-lg dark:text-light dark:border-light'>
-      <Layout className='py-8 flex items-center justify-between'>
+    <footer className='w-full border-t-2 border-solid border-dark font-medium text-lg dark:text-light dark:border-light sm:text-base'>
+      <Layout 
+        className='py-8 flex items-center justify-between lg:flex-col 2xl:py-8 1.75xl:py-8 1.5xl:py-8 1.25xl:py-7 xl:py-7 0.75xl:py-7 0.5xl:py-6 0.25xl:py-6 lg:py-6'
+      >
         <span>{new Date().getFullYear()} &copy; All Rights Reserved.</span>
-        <div className='flex items-center select-none'>
+        <div className='flex items-center select-none lg:py-2'>
           Build with&nbsp;
           {
             isFilled ? 
