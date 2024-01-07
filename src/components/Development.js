@@ -39,8 +39,8 @@ function Development() {
   );
 
   return (
-    <div className='my-64'>
-      <h2 className='font-bold text-8xl mb-32 w-full text-center md:text-6xl xs:text-4xl md:mb-16'>About MusicGen</h2>
+    <div className='my-64 md:my-32'>
+      <h2 className='font-bold text-8xl mt-16 mb-32 w-full text-center lg:!text-7xl sm:!text-6xl xs:!text-4xl xs:mt-4 xs:mb-16'>About MusicGen</h2>
       
       <div ref={ref} className='w-[75%] lg:w-[90%] md:w-full mx-auto relative'>
         <motion.div 

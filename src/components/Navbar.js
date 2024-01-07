@@ -81,7 +81,7 @@ function Navbar() {
           <CustomLink href='/generate' title="Generate Music" className='mx-4' />
           <CustomLink href='/articles' title="Articles" className='ml-4' />
         </nav>
-        <div className='flex items-center justify-center relative lg:left-1/2 transform lg:-translate-x-1/2 -translate-y-1'>
+        <div className='flex items-center justify-center relative  lg:left-1/2 transform lg:-translate-x-1/2 -translate-y-1 lg:pr-4 xs:pr-5'>
             <Logo />
         </div>
         <nav className='flex items-center justify-center flex-wrap lg:hidden'>

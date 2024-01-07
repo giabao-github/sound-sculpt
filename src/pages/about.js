@@ -7,6 +7,7 @@ import { useInView, useMotionValue, useSpring } from 'framer-motion';
 import { React, useEffect, useRef } from 'react';
 import illustration from '../../public/images/arts/illustration.png';
 import Image from 'next/image';
+import TransitionEffect from '@/components/TransitionEffect';
 
 const AnimatedNumbers = ({value}) => {
   const ref = useRef(null);
@@ -36,12 +37,13 @@ function about() {
   return (
     <>
       <Head>
-        <title>SoundSculpt | About Page</title>
+        <title>SoundSculpt | About</title>
         <meta name='description' content='' />
       </Head>
+      <TransitionEffect />
       <main className='flex w-full flex-col items-center justify-center dark:text-light'>
       <Layout className='pt-16'>
-        <AnimatedText text='A magical music tool!' className='mb-16 lg:!text-7xl sm:text-6xl sm:mb-8 xs:text-4xl' />
+        <AnimatedText text='A magical music tool!' className='mt-8 mb-16 lg:!text-7xl sm:!text-6xl sm:!mb-8 xs:!text-4xl' />
         <div className='grid w-full grid-cols-8 gap-16 sm:gap-8'>
           <div className='col-span-3 xl:col-span-4 md:order-2 md:col-span-8 flex flex-col items-start justify-start'>
             <h2 className='mb-4 text-lg font-bold uppercase text-dark/75 dark:text-light/75'>Introduction</h2>
@@ -56,7 +58,8 @@ function about() {
             </p>
           </div>
           <div className='col-span-3 xl:col-span-4 md:order-1 md:col-span-8 relative h-max rounded-2xl border-2 border-solid border-dark bg-light dark:bg-dark dark:border-light p-8'>
-            <div className='absolute top-0 -right-3 -z-10 w-[103%] h-[103%] rounded-[2rem] bg-dark dark:bg-light' />
+            <div className='absolute top-0 -right-3 -z-10 w-[103%] h-[103%] lg:w-[103.5%] lg:h-[103.5%] xs:-top-[2px] xs:-right-2 xs:w-[103.5%] 
+            xs:h-[103.5%] xs:rounded-[1.5rem] rounded-[2rem] bg-dark dark:bg-light' />
             <Image 
               src={illustration} alt='' className='w-full h-auto rounded-2xl' 
               priority sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' 
