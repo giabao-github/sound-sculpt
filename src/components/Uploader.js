@@ -308,9 +308,9 @@ function Uploader() {
 
   return (
     <main className='w-full flex flex-col items-center justify-between'>
-      <div className='w-full flex justify-center flex-wrap'>
+      <div className='w-full flex justify-center flex-wrap md:flex-col md:items-center'>
         <form 
-          className={`relative mr-3 h-96 w-2/5 flex flex-col justify-center items-center border-4 ${audio ? 'border-solid' : 'border-dashed'} border-primary dark:border-primaryDark rounded-md mb-1 bg-yellow-100 dark:bg-green-900`}
+          className={`relative mr-3 h-96 w-2/5 md:mr-0 lg:h-80 lg:w-[48%] 0.25lg:w-4/5 0.25lg:mr-0 xs:h-64 xs:w-full flex flex-col justify-center items-center border-4 ${audio ? 'border-solid' : 'border-dashed'} border-primary dark:border-primaryDark rounded-md mb-1 bg-yellow-100 dark:bg-green-900 md:self-center`}
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
         >
@@ -322,7 +322,7 @@ function Uploader() {
                 artwork ? 
                 <img
                   title={fileName.split('.').slice(0, -1).join('.')}
-                  className='w-60 h-60 rounded-md cursor-pointer' src={artwork} alt='artwork' 
+                  className='w-60 h-60 lg:w-48 lg:h-48 xs:w-36 xs:h-36 rounded-md cursor-pointer' src={artwork} alt='artwork' 
                   onClick={() => document.querySelector('.input-field').click()} 
                 /> :
                 <img
@@ -332,7 +332,7 @@ function Uploader() {
                 />
               }
               <audio ref={audioRef} src={audio} crossOrigin="anonymous" />
-              <div className='progress-bar-container mt-8 w-4/5 h-1 bg-gray-300 dark:bg-gray-400 cursor-pointer rounded-md relative' onClick={handleProgressBarClick}>
+              <div className='progress-bar-container mt-8 lg:mt-6 md:mt-4 w-4/5 h-1 bg-gray-300 dark:bg-gray-400 cursor-pointer rounded-md relative' onClick={handleProgressBarClick}>
                 <div className='progress-bar h-1 bg-blue-500 dark:bg-blue-400 rounded-md absolute' style={{ width: `${progress}%` }}></div>
                 <div 
                   className='h-3 w-3 bg-blue-500 dark:bg-blue-400 rounded-full absolute -top-1 left-0' 
@@ -344,19 +344,23 @@ function Uploader() {
               <div className='w-full flex justify-between' draggable='false'>
                 {
                   audio &&
-                  <div className='w-1/5 absolute left-12 bottom-5 flex items-center'>
+                  <div className='w-1/5 lg:w-1/4 0.25lg:w-1/5 sm:w-1/4 xs:w-1/4 absolute left-12 lg:left-7 0.25lg:left-10 sm:left-7 xs:left-6 bottom-5 md:bottom-4 flex items-center'>
                     <button
                       type='button'
                       title={`${isMuted ? 'Turn on sound' : 'Mute'}`}
-                      className='text-xl mr-3 hover:text-primary dark:text-white dark:hover:text-primaryDark'
+                      className='text-xl sm:text-base mr-3 lg:mr-2 0.25lg:mr-[12px] hover:text-primary dark:text-white dark:hover:text-primaryDark'
                       onClick={handleMute}
                       onDragStart={(e) => e.preventDefault()}
                     >{isMuted ? <FaVolumeXmark/> : <FaVolumeHigh/>}
                     </button>
-                    <div className='volume-control-container w-full h-0.5 bg-gray-300 dark:bg-gray-400 cursor-pointer rounded-md relative' onClick={handleVolumeChange}>
-                      <div className='volume-bar h-0.5 bg-blue-500 dark:bg-blue-400 rounded-md absolute' style={{ width: `${displayVolume * 100}%` }}></div>
+                    <div 
+                      className='volume-control-container w-full h-0.5 bg-gray-300 dark:bg-gray-400 cursor-pointer rounded-md relative' 
+                      onClick={handleVolumeChange}>
                       <div 
-                        className='h-2 w-2 bg-blue-500 dark:bg-blue-400 rounded-full absolute -top-[3px] left-0' 
+                        className='volume-bar h-0.5 bg-blue-500 dark:bg-blue-400 rounded-md absolute' style={{ width: `${displayVolume * 100}%` }}
+                      ></div>
+                      <div 
+                        className='h-2 w-2 bg-blue-500 dark:bg-blue-400 rounded-full absolute -top-[3px] sm:-top-[4px] xs:-top-[4px] left-0' 
                         style={{ left: `calc(${displayVolume * 100}% - 0.4rem)` }}
                         onMouseDown={handleVolumeMouseDown}
                         onMouseUp={handleVolumeMouseUp}
@@ -366,7 +370,7 @@ function Uploader() {
                   </div>
                 }
                 <span 
-                  className='w-9 h-5 ml-[3rem] text-sm mt-1 flex justify-start select-none dark:text-white' 
+                  className='w-9 h-5 ml-12 lg:ml-7 0.25lg:ml-10 sm:ml-7 xs:ml-6 text-sm xs:text-xs mt-1 flex justify-start select-none dark:text-white' 
                   onDragStart={(e) => e.preventDefault()}
                 >
                 { audioRef.current ? formatTime(time.current) : '0:00' }
@@ -376,7 +380,7 @@ function Uploader() {
                   <button
                     type='button'
                     title={`${isPlaying ? 'Pause' : 'Play'}`}
-                    className='text-5xl mt-3 hover:text-primary dark:text-white dark:hover:text-primaryDark'
+                    className='text-5xl lg:!text-4xl xs:!text-3xl mt-3 hover:text-primary dark:text-white dark:hover:text-primaryDark'
                     onClick={(e) => { 
                       e.stopPropagation(); 
                       handlePlayPause(); 
@@ -386,7 +390,7 @@ function Uploader() {
                   </button>
                 }
                 <span 
-                  className='w-9 h-5 mr-[3rem] text-sm mt-1 flex justify-end select-none dark:text-white'
+                  className='w-9 h-5 mr-12 lg:mr-7 0.25lg:mr-10 sm:mr-7 xs:mr-6 text-sm xs:text-xs mt-1 flex justify-end select-none dark:text-white'
                   onDragStart={(e) => e.preventDefault()}
                 >
                 { audioRef.current ? formatTime(time.remaining) : '0:00' }
@@ -396,7 +400,7 @@ function Uploader() {
                 <button 
                   type='button'
                   title={`${isLooping ? 'Loop: Enabled' : 'Loop: Disabled'}`}
-                  className={`text-xl mr-3 hover:text-primary dark:hover:text-primaryDark ${isLooping ? 'text-primary dark:text-primaryDark' : 'dark:text-white'} absolute right-9 bottom-5 flex items-center`}
+                  className={`text-xl sm:text-base mr-3 lg:-mr-1 0.25lg:mr-2 sm:-mr-2 xs:-mr-3 hover:text-primary dark:hover:text-primaryDark ${isLooping ? 'text-primary dark:text-primaryDark' : 'dark:text-white'} absolute right-9 bottom-5 md:bottom-4 flex items-center`}
                   onClick={() => setIsLooping(!isLooping)}
                 >{isLooping ? <BsRepeat1/> : <BsRepeat/>}
                 </button>
@@ -408,35 +412,42 @@ function Uploader() {
                 className='flex flex-col justify-center items-center cursor-pointer dark:text-white' 
                 onClick={() => document.querySelector('.input-field').click()}
               >
-                <Image className='mb-3 pb-2 dark:filter dark:invert' src={uploadImage} alt='' width={160} height={160} />
-                <p className='font-medium 1.25xl:text-[0.95rem] 0.75xl:text-[0.9rem] 0.5xl:text-[0.85rem] 0.25xl:hidden'>Browse or drag an audio file to upload</p>
+                <Image className='mb-3 pb-2 dark:filter dark:invert w-32 h-32 md:w-24 md:h-24' src={uploadImage} alt='' />
+                <p 
+                  className='font-medium 1.25xl:text-[0.95rem] 0.75xl:text-[0.9rem] 0.5xl:text-[0.85rem] 0.25xl:text-[0.8rem] lg:text-[0.75rem] 
+                  0.25lg:text-[0.9rem] xs:hidden'
+                >Browse or drag an audio file to upload</p>
               </span>
             </>
           }
         </form>
         <form
-          className='relative h-96 w-2/5 flex flex-col justify-center items-center border-4 border-dashed 
-          border-primary dark:border-primaryDark rounded-md mb-1 bg-yellow-100 dark:bg-green-900 ml-2'
+          className='relative h-96 w-2/5 lg:h-80 lg:w-[48%] 0.25lg:w-4/5 xs:h-64 xs:w-full flex flex-col justify-center items-center border-4 
+          border-dashed border-primary dark:border-primaryDark rounded-md mb-1 bg-yellow-100 dark:bg-green-900 ml-2 0.25lg:ml-0 0.25lg:mt-2 
+          md:self-center'
         >
           <span 
             title='Generated Music'
             className='flex flex-col justify-center items-center cursor-pointer dark:text-white' 
           >
-            <Image className='dark:filter dark:invert' src={generateImage} alt='' width={180} height={180} />
-            <p className='font-medium mt-1 1.25xl:text-[0.95rem] 0.75xl:text-[0.9rem] 0.5xl:text-[0.85rem] 0.25xl:hidden'>Generated Music</p>
+            <Image className='dark:filter dark:invert w-36 h-36 md:w-28 md:h-28' src={generateImage} alt='' />
+            <p 
+              className='font-medium mt-1 1.25xl:text-[0.95rem] 0.75xl:text-[0.9rem] 0.5xl:text-[0.85rem] 0.25xl:text-[0.8rem] lg:text-[0.75rem] 
+              0.25lg:text-[0.9rem] xs:hidden'
+            >Generated Music</p>
           </span>
         </form>
       </div>
-      <div className='w-full flex justify-center flex-wrap my-3'>
-        <section className='relative w-2/5 h-2/5 mr-5 py-3 px-4 flex justify-between items-center rounded-md bg-slate-200 dark:bg-slate-700 dark:text-white'>
+      <div className='w-full flex justify-center flex-wrap my-3 md:flex-col md:items-center'>
+        <section className='relative w-2/5 h-2/5 mr-5 lg:w-[48%] 0.25lg:w-4/5 xs:w-full 0.25lg:mr-0 0.25lg:mb-3 py-3 px-3 xs:py-2 flex justify-between items-center rounded-md bg-slate-200 dark:bg-slate-700 dark:text-white md:self-center'>
           <span className='flex items-center'>
             <BsFileEarmarkMusicFill 
               title={`${audio ? 'Change media' : 'Browse an audio file'}`}
               className='cursor-pointer text-[#1475cf] dark:text-[#3399ff] xl:text-xs'
               onClick={() => document.querySelector('.input-field').click()}
             />
-            <div className='w-2'></div>
-            <p className='text-sm xl:text-xs'>{fileName}</p>
+            <div className='w-2 xs:w-1'></div>
+            <p className='text-sm xl:text-xs xs:text-[13px] overflow-ellipsis line-clamp-1'>{fileName}</p>
           </span>
           <BsTrashFill
             title={`${audio ? 'Delete media' : 'No media to delete'}`}
@@ -450,11 +461,10 @@ function Uploader() {
           />
         </section>  
         <div 
-          className='relative w-2/5 border-[3px] border-gray-300 rounded-md 
-          bg-white dark:bg-[#242424] focus-within:border-primary dark:focus-within:border-primaryDark'>
+          className='relative w-2/5 lg:w-[48%] 0.25lg:w-4/5 xs:w-full border-[3px] border-gray-300 rounded-md bg-white dark:bg-[#242424] focus-within:border-primary dark:focus-within:border-primaryDark'>
           <textarea
             title='Describe your music'
-            className='w-full pt-2 px-4 rounded-md border-none resize-none outline-none font-medium dark:bg-[#242424] dark:text-white dark:placeholder:text-gray-500 1.5xl:text-sm'
+            className='w-full pt-2 px-4 rounded-md border-none resize-none outline-none font-medium dark:bg-[#242424] dark:text-white dark:placeholder:text-gray-500 1.5xl:text-sm xs:text-xs'
             placeholder='A light and cheery EDM track, with syncopated drums, airy pads, and strong emotions, at 130 bpm'
             maxLength={1000}
             value={input}
@@ -466,10 +476,17 @@ function Uploader() {
               }
             }}
           />
-          <p 
-            className='w-full px-4 pb-1 rounded-es-md rounded-ee-md flex justify-end 
-            bg-white dark:bg-[#242424] text-sm 1.5xl:text-xs text-dark/75 dark:text-light/75'
-          >{`${input.length}/1000`}</p>
+          <div className='my-1'>
+            <button 
+              onClick={() => setInput(document.querySelector('textarea').placeholder)}
+              className='block absolute left-4 bottom-0 mr-[14px] my-2 px-2 py-[1px] rounded-[4px] bg-white dark:bg-[#242424] text-dark/75 border border-solid dark:text-light/75 border-gray-400 dark:border-light/75 text-[0.65rem] xs:text-[0.55rem]'
+            >
+              Tab
+            </button>
+            <p 
+              className='w-full px-4 pb-1 flex justify-end bg-white dark:bg-[#242424] text-sm 1.5xl:text-xs text-dark/75 dark:text-light/75'
+            >{`${input.length}/1000`}</p>
+          </div>
         </div>
       </div>
       <button 

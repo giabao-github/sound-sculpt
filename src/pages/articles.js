@@ -24,7 +24,7 @@ const MovingImage = ({title, image, link}) => {
   const handleMouse = (event) => {
     imageRef.current.style.display = 'inline-block';
     x.set(event.pageX);
-    y.set(-4);
+    y.set(0);
   }
 
   const handleMouseLeave = (event) => {
@@ -39,13 +39,13 @@ const MovingImage = ({title, image, link}) => {
       onMouseMove={handleMouse}
       onMouseLeave={handleMouseLeave}
     >
-      <h2 className='capitalize text-xl font-semibold hover:underline'>{title}</h2>
+      <h2 className='capitalize text-xl xs:!text-sm font-semibold hover:underline'>{title}</h2>
       <FramerImage 
         ref={imageRef} src={image} alt={title}
         style={{ x: x, y: y }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1, transition: {duration: 0.2} }}
-        className='w-52 z-10 h-auto hidden absolute rounded-lg md:!hidden' 
+        className='w-48 z-10 h-auto hidden absolute rounded-lg md:!hidden' 
       />
     </Link>
   );
@@ -57,11 +57,12 @@ const Article = ({image, title, date, link}) => {
       initial={{ y: 200 }}
       whileInView={{ y: 0, transition: { duration: 0.5, ease: 'easeInOut' } }}
       viewport={{ once: true }}
-      className='relative w-full px-4 py-6 my-4 rounded-xl flex items-center justify-between bg-light dark:bg-dark text-dark 
-      dark:text-light first:mt-0 border border-solid border-dark dark:border-light border-r-4 border-b-4 0.5xl:flex-col 0.5xl:items-start'>
+      className='relative w-full px-4 py-6 xs:px-3 xs:py-2 my-4 rounded-xl flex items-center justify-between bg-light dark:bg-dark text-dark 
+      dark:text-light first:mt-0 border border-solid border-dark dark:border-light border-r-4 border-b-4 0.5xl:flex-col 
+      0.5xl:items-start'>
       <MovingImage title={title} image={image} link={link} />
       <span className='w-[25%] flex items-start justify-end text-primary dark:text-primaryDark pl-4 0.5xl:w-full 0.5xl:self-start 
-      0.5xl:justify-start 0.5xl:pl-0 0.5xl:pt-1 xs:text-sm'>{date}</span>
+      0.5xl:justify-start 0.5xl:pl-0 0.5xl:pt-1 xs:text-xs'>{date}</span>
     </motion.li>
   );
 }
@@ -124,7 +125,7 @@ function articles() {
         <meta name='description' content='' />
       </Head>
       <TransitionEffect />  
-      <main className='w-full mb-16 flex flex-col items-center justify-center overflow-hidden'>
+      <main className='w-full mb-16 xs:mb-0 flex flex-col items-center justify-center overflow-hidden'>
         <Layout className='pt-16'>
           <AnimatedText text='Words Can Change The World!' className='mt-8 mb-16 lg:!text-7xl sm:mb-8 sm:!text-6xl xs:!text-4xl' />
           <ul className='dark:text-light grid grid-cols-2 gap-16 xl:gap-8 lg:grid-cols-1 lg:gap-y-16'>
@@ -143,7 +144,7 @@ function articles() {
               image={article2}
             />
           </ul>
-          <h2 className='font-bold text-4xl xl:!text-3xl w-full text-center my-16 mt-32 dark:text-light'>All Articles</h2>
+          <h2 className='font-bold text-4xl xl:!text-3xl xs:!text-2xl w-full text-center mb-8 mt-32 dark:text-light'>All Articles</h2>
           <ul className='pb-8'>
             <Article
               title='Equipping MusicGen with Chord and Rhythm Controls'
@@ -175,7 +176,6 @@ function articles() {
               link='https://arxiv.org/pdf/1907.10380.pdf'
               image={article6}
             />
-            
           </ul>
         </Layout>
       </main>

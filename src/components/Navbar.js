@@ -172,10 +172,6 @@ function Navbar() {
         </motion.div>
         : null
       }
-
-      {/* <div className='absolute left-1/2 top-2 transform -translate-x-1/2'>
-        <Logo />
-      </div> */}
     </header>
   );  
 }

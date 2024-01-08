@@ -12,7 +12,7 @@ function generate() {
         <meta name='description' content='' />
       </Head>
       <TransitionEffect />
-      <main>
+      <main className=''>
         <Layout className='pt-16'>
           <Uploader />
         </Layout>

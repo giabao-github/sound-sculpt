@@ -45,6 +45,8 @@ export const theme = {
     "0.5xl": { max: "1152px" },     // @media (max-width: 1160px)
     "0.25xl": { max: "1088px" },    // @media (max-width: 1088px)
     "lg": { max: "1024px" },        // @media (max-width: 1024px)
+    "0.75lg": { max: "960px" },     // @media (max-width: 960px)
+    "0.25lg": { max: "832px" },      // @media (max-width: 832px)
     "md": { max: "768px" },         // @media (max-width: 768px)
     "sm": { max: "640px" },         // @media (max-width: 640px)
     "xs": { max: "480px" },         // @media (max-width: 480px)

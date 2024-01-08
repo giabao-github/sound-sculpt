@@ -9,9 +9,9 @@ function Footer() {
   const [isFilled, setIsFilled] = useState(false);
 
   return (
-    <footer className='w-full border-t-2 border-solid border-dark font-medium text-lg dark:text-light dark:border-light sm:text-base'>
+    <footer className='w-full border-t-2 border-solid border-dark font-medium text-lg xs:!text-sm dark:text-light dark:border-light sm:text-base'>
       <Layout 
-        className='py-8 flex items-center justify-between lg:flex-col 2xl:py-8 1.75xl:py-8 1.5xl:py-8 1.25xl:py-7 xl:py-7 0.75xl:py-7 0.5xl:py-6 0.25xl:py-6 lg:py-6'
+        className='py-8 flex items-center justify-between lg:flex-col 2xl:!py-8 1.75xl:!py-8 1.5xl:!py-8 1.25xl:!py-7 xl:!py-7 0.75xl:!py-7 0.5xl:!py-6 0.25xl:!py-6 lg:!py-6 md:!py-5 sm:!py-5 xs:!py-5'
       >
         <span>{new Date().getFullYear()} &copy; All Rights Reserved.</span>
         <div className='flex items-center select-none lg:py-2'>
@@ -19,7 +19,7 @@ function Footer() {
           {
             isFilled ? 
             <FaRegHeart
-              className={`text-primary dark:text-primaryDark text-2xl px-1 cursor-pointer`}
+              className={`text-primary dark:text-primaryDark text-2xl xs:!text-xl px-1 cursor-pointer`}
               onClick={() => { 
                 if (!isFilled) {
                   setIsFilled(true)
@@ -29,7 +29,7 @@ function Footer() {
               }}
             /> :
             <FaHeart
-              className={`text-primary dark:text-primaryDark text-2xl px-1 cursor-pointer`}
+              className={`text-primary dark:text-primaryDark text-2xl xs:!text-xl px-1 cursor-pointer`}
               onClick={() => { 
                 if (!isFilled) {
                   setIsFilled(true)
@@ -56,7 +56,7 @@ function Footer() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         >
-          <FaCircleUp className='text-3xl' />
+          <FaCircleUp className='text-3xl xs:!text-2xl' />
         </Link>
       </Layout>
     </footer>

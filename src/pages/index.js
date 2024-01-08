@@ -17,7 +17,7 @@ export default function Home() {
       <script src='../components/hooks/useThemeSwitcher.js'>
       </script>
       <TransitionEffect />
-      <main className='flex items-center text-dark w-full min-h-screen dark:text-light'>
+      <main className='flex items-center w-full min-h-screen text-dark dark:text-light'>
         <Layout className='pt-0 md:pt-16 sm:pt-8'>
           <div className='flex items-center justify-between w-full lg:flex-col'>
             <div className='w-1/2 md:w-full'>
@@ -53,10 +53,6 @@ export default function Home() {
             </div>
           </div>
         </Layout>
-
-        {/* <div className='absolute right-8 bottom-8 inline-block w-24'>
-          <Image src={lightBulb} alt='' className='w-full h-auto' />
-        </div> */}
       </main>
     </>
   );
