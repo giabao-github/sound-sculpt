@@ -119,55 +119,58 @@ function Navbar() {
         <motion.div
           initial={{ scale: 0, opacity: 0, x: '-50%', y: '-50%' }}
           animate={{ scale: 1, opacity: 1 }}
-          className='min-w-[70vw] flex flex-col justify-between items-center fixed z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-dark/75 dark:bg-light/75 rounded-lg backdrop-blur-md py-16'>
-          <nav className='flex flex-col justify-center items-center'>
+          className='min-w-[70vw] xs:min-w-[80vw] flex flex-col justify-between items-center fixed z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-dark/75 dark:bg-light/75 rounded-lg backdrop-blur-md py-12 xxs:py-8'>
+          <nav className='flex flex-col justify-center items-center 0.25lg:!text-lg sm:!text-base xs:!text-sm'>
             <CustomLinkMobile href='/' title="Home" className='' toggle={handleClick} />
             <CustomLinkMobile href='/about' title="About" className='' toggle={handleClick} />
             <CustomLinkMobile href='/generate' title="Generate Music" className='' toggle={handleClick} />
             <CustomLinkMobile href='/articles' title="Articles" className='' toggle={handleClick} />
           </nav>
-          <nav className='flex items-center justify-center flex-wrap mt-5 mb-3'>
-            <motion.a 
-              href='https://twitter.com/Cendryss' title='Twitter' target={'_blank'} 
-              className='w-6 mr-3 sm:mx-1' 
-              whileHover={{y: -2}} whileTap={{scale: 0.9}}>
-              <TwitterIcon />
-            </motion.a>
-            <motion.a 
-              href='https://github.com/giabao-github' title='GitHub' target={'_blank'} 
-              className='w-6 mx-3 bg-light dark:bg-dark rounded-full sm:mx-1' 
-              whileHover={{y: -2}} whileTap={{scale: 0.9}}>
-              <GithubIcon />
-            </motion.a>
-            <motion.a 
-              href='https://www.linkedin.com/in/b%E1%BA%A3o-nguy%E1%BB%85n-6ab64929a' title='LinkedIn' target={'_blank'} 
-              className='w-6 mx-3 sm:mx-1' 
-              whileHover={{y: -2}} whileTap={{scale: 0.9}}>
-              <LinkedInIcon />
-            </motion.a>
-            <motion.a 
-              href='https://www.pinterest.com/giabaonguyenworkspace/' title='Pinterest' target={'_blank'} 
-              className='w-6 mx-3 bg-light rounded-full sm:mx-1' 
-              whileHover={{y: -2}} whileTap={{scale: 0.9}}>
-              <PinterestIcon />
-            </motion.a>
-            <motion.a 
-              href='https://dribbble.com/' title='Dribbble' target={'_blank'} 
-              className='w-6 mx-3 sm:mx-1' 
-              whileHover={{y: -2}} whileTap={{scale: 0.9}}>
-              <DribbbleIcon />
-            </motion.a>
-
-            <button
-              title={`${mode === 'dark'   ? 'Dark Mode: On' : 'Dark Mode: Off'}`}
-              onClick={() => setMode(mode === 'light' ?  'dark' : 'light')}
-              className={`ml-3 flex items-center justify-center rounded-full p-1 ${mode === 'light' ? 'bg-dark text-light' : 'bg-light text-dark'}`}
-            >
-              {
-                mode === 'dark' ?
-                <SunIcon className={'fill-dark'} /> : <MoonIcon className={'fill-dark'} />
-              }
-            </button>
+          <nav className='flex flex-wrap items-center justify-center mt-5 mb-3'>
+            <div className='flex justify-center items-center xxs:w-full'>
+              <motion.a 
+                href='https://twitter.com/Cendryss' title='Twitter' target={'_blank'} 
+                className='w-6 mr-3 sm:mr-2 xs:mr-[6px] xxs:mr-2' 
+                whileHover={{y: -2}} whileTap={{scale: 0.9}}>
+                <TwitterIcon />
+              </motion.a>
+              <motion.a 
+                href='https://github.com/giabao-github' title='GitHub' target={'_blank'} 
+                className='w-6 mx-3 sm:mx-2 xs:mx-[6px] xxs:mx-2 bg-light dark:bg-dark rounded-full' 
+                whileHover={{y: -2}} whileTap={{scale: 0.9}}>
+                <GithubIcon />
+              </motion.a>
+              <motion.a 
+                href='https://www.linkedin.com/in/b%E1%BA%A3o-nguy%E1%BB%85n-6ab64929a' title='LinkedIn' target={'_blank'} 
+                className='w-6 mx-3 sm:mx-2 xs:mx-[6px] xxs:ml-2 xxs:mr-0' 
+                whileHover={{y: -2}} whileTap={{scale: 0.9}}>
+                <LinkedInIcon />
+              </motion.a>
+            </div>
+            <div className='flex justify-center items-center xxs:w-full xxs:mt-2'>
+              <motion.a 
+                href='https://www.pinterest.com/giabaonguyenworkspace/' title='Pinterest' target={'_blank'} 
+                className='w-6 mx-3 sm:mx-2 xs:mx-[6px] xxs:mr-2 xxs:ml-0 bg-light rounded-full' 
+                whileHover={{y: -2}} whileTap={{scale: 0.9}}>
+                <PinterestIcon />
+              </motion.a>
+              <motion.a 
+                href='https://dribbble.com/' title='Dribbble' target={'_blank'} 
+                className='w-6 mx-3 sm:mx-2 xs:mx-[6px] xxs:mx-2' 
+                whileHover={{y: -2}} whileTap={{scale: 0.9}}>
+                <DribbbleIcon />
+              </motion.a>
+              <button
+                title={`${mode === 'dark'   ? 'Dark Mode: On' : 'Dark Mode: Off'}`}
+                onClick={() => setMode(mode === 'light' ?  'dark' : 'light')}
+                className={`ml-3 sm:ml-2 xs:ml-[6px] xxs:ml-2 flex items-center justify-center rounded-full p-1 ${mode === 'light' ? 'bg-dark text-light' : 'bg-light text-dark'}`}
+              >
+                {
+                  mode === 'dark' ?
+                  <SunIcon className={'fill-dark'} /> : <MoonIcon className={'fill-dark'} />
+                }
+              </button>
+            </div>
           </nav>
         </motion.div>
         : null
