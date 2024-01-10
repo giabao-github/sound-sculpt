@@ -299,7 +299,7 @@ function Uploader() {
     }
   }, [audio, fileName]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (audioRef.current) {
       setTime({ current: audioRef.current.currentTime, remaining: audioRef.current.duration - audioRef.current.currentTime })
     }
