@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, useScroll } from 'framer-motion';
 
-function DevelopementIcons({ reference }) {
+function DevelopmentIcons({ reference }) {
   const { scrollYProgress } = useScroll(
     {
       target: reference,
@@ -20,4 +20,4 @@ function DevelopementIcons({ reference }) {
   );
 }
 
-export default DevelopementIcons;
+export default DevelopmentIcons;

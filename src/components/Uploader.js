@@ -1,4 +1,4 @@
-import { React, useRef, useState, useEffect, useLayoutEffect } from 'react';
+import { React, useRef, useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import { BsFileEarmarkMusicFill, BsTrashFill, BsPlayCircleFill, BsPauseCircleFill, BsRepeat, BsRepeat1, BsCurrencyBitcoin } from "react-icons/bs";
 import { FaVolumeHigh, FaVolumeXmark } from "react-icons/fa6";
 import Image from 'next/image';
@@ -226,7 +226,7 @@ function Uploader() {
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   }
 
-  const updateTime = () => {
+  const updateTime = useCallback(() => {
     if (audioRef.current) {
       const current = audioRef.current.currentTime;
       const remaining = audioRef.current.duration - current;
@@ -236,9 +236,9 @@ function Uploader() {
       }
       animationFrameRef.current = requestAnimationFrame(updateTime);
     }
-  };
+  }, []);
 
-  const handleTimeUpdate = () => {
+  const handleTimeUpdate = useCallback(() => {
     if (audioRef.current) {
       if (audioRef.current.currentTime >= audioRef.current.duration) {
         setIsPlaying(false);
@@ -247,12 +247,40 @@ function Uploader() {
         setIsPlaying(true);
       }
     }
-  };
+  }, []);
 
   // Input
   const handleInputChange = (event) => {
     setInput(event.target.value);
   };
+
+  // Generate
+  const handleGenerateClick = async () => {
+    // Get the audio file and description
+    const audio = document.querySelector('input[type="file"]').files[0];
+    const description = document.querySelector('textarea').value;
+
+    // Create a FormData object
+    const formData = new FormData();
+    formData.append('audio', audio);
+    formData.append('description', description);
+
+    // Send a POST request to the /generate endpoint
+    const response = await fetch('/generate', {
+      method: 'POST',
+      body: formData
+    });
+
+    // Handle the response
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data.generated_music);
+      // Do something with the generated music
+    } else {
+      console.error('Error:', response.statusText);
+    }
+  };
+
 
   // useEffect
   useEffect(() => {
@@ -288,7 +316,7 @@ function Uploader() {
         }
       };
     }
-  }, [audio]);
+  }, [updateTime, handleTimeUpdate, audioRef]);
 
   useEffect(() => {
     if (audio) {
@@ -297,7 +325,7 @@ function Uploader() {
     else {
       document.title = 'SoundSculpt | Generate Music';
     }
-  }, [audio, fileName]);
+  }, [audio, fileName, time.remaining]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -309,7 +337,7 @@ function Uploader() {
     <main className='w-full flex flex-col items-center justify-between'>
       <div className='w-full flex justify-center flex-wrap md:flex-col md:items-center'>
         <form 
-          className={`relative mr-3 h-96 w-2/5 md:mr-0 lg:h-80 lg:w-[48%] 0.25lg:w-4/5 0.25lg:mr-0 xs:h-64 xs:w-full xxs:h-52 flex flex-col justify-center items-center border-4 ${audio ? 'border-solid' : 'border-dashed'} border-primary dark:border-primaryDark rounded-md mb-1 bg-yellow-100 dark:bg-green-900 md:self-center`}
+          className={`relative mr-3 h-[400px] w-2/5 md:mr-0 lg:h-80 lg:w-[48%] 0.25lg:w-4/5 0.25lg:mr-0 xs:h-64 xs:w-full xxs:h-52 flex flex-col justify-center items-center border-4 ${audio ? 'border-solid' : 'border-dashed'} border-primary dark:border-primaryDark rounded-md mb-1 bg-yellow-100 dark:bg-green-900 md:self-center`}
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
         >
@@ -319,22 +347,24 @@ function Uploader() {
             <>
               {
                 artwork ? 
-                <img
+                <Image
                   title={fileName.split('.').slice(0, -1).join('.')}
-                  className='w-60 h-60 lg:w-48 lg:h-48 xs:w-36 xs:h-36 xxs:w-32 xxs:h-32 rounded-md cursor-pointer' src={artwork} alt='artwork' 
+                  className='w-60 h-60 lg:w-48 lg:h-48 xs:w-36 xs:h-36 xxs:w-32 xxs:h-32 rounded-md cursor-pointer' 
+                  src={artwork} alt='artwork' width={30} height={30}
                   onClick={() => document.querySelector('.input-field').click()} 
                 /> :
-                <img
+                <Image
                   title={fileName.split('.').slice(0, -1).join('.')}
-                  className='w-60 h-60 rounded-md cursor-pointer' src='/images/arts/default-artwork.png' alt='artwork'
+                  className='w-60 h-60 rounded-md cursor-pointer' 
+                  src='/images/arts/default-artwork.png' alt='artwork' width={30} height={30}
                   onClick={() => document.querySelector('.input-field').click()}
                 />
               }
               <audio ref={audioRef} src={audio} crossOrigin="anonymous" />
-              <div className='progress-bar-container mt-8 lg:mt-6 md:mt-4 w-4/5 h-1 xxs:h-[3px] bg-gray-300 dark:bg-gray-400 cursor-pointer rounded-md relative' onClick={handleProgressBarClick}>
-                <div className='progress-bar h-1 xxs:h-[3px] bg-blue-500 dark:bg-blue-400 rounded-md absolute' style={{ width: `${progress}%` }}></div>
+              <div className='progress-bar-container mt-8 lg:mt-6 md:mt-4 w-4/5 h-2 xxs:h-[3px] bg-gray-300 dark:bg-gray-400 cursor-pointer rounded-md relative' onClick={handleProgressBarClick}>
+                <div className='progress-bar h-2 xxs:h-[3px] bg-blue-500 dark:bg-blue-400 rounded-md absolute' style={{ width: `${progress}%` }}></div>
                 <div 
-                  className='h-3 w-3 xxs:h-2 xxs:w-2 bg-blue-500 dark:bg-blue-400 rounded-full absolute -top-1 left-0
+                  className='h-4 w-4 xxs:h-2 xxs:w-2 bg-blue-500 dark:bg-blue-400 rounded-full absolute -top-1 left-0
                   xxs:-top-[3px] xxs:-left-1' 
                   style={{ left: `calc(${progress}% - 0.5rem)` }}
                   onMouseDown={handleProgressMouseDown}
@@ -354,13 +384,13 @@ function Uploader() {
                     >{isMuted ? <FaVolumeXmark/> : <FaVolumeHigh/>}
                     </button>
                     <div 
-                      className='volume-control-container w-full h-0.5 bg-gray-300 dark:bg-gray-400 cursor-pointer rounded-md relative xs:hidden' 
+                      className='volume-control-container w-full h-1 bg-gray-300 dark:bg-gray-400 cursor-pointer rounded-md relative xs:hidden' 
                       onClick={handleVolumeChange}>
                       <div 
-                        className='volume-bar h-0.5 bg-blue-500 dark:bg-blue-400 rounded-md absolute' style={{ width: `${displayVolume * 100}%` }}
+                        className='volume-bar h-1 bg-blue-500 dark:bg-blue-400 rounded-md absolute' style={{ width: `${displayVolume * 100}%` }}
                       ></div>
                       <div 
-                        className='h-2 w-2 bg-blue-500 dark:bg-blue-400 rounded-full absolute -top-[3px] sm:-top-[4px] xs:-top-[4px] left-0' 
+                        className='h-2 w-2 bg-blue-500 dark:bg-blue-400 rounded-full absolute -top-[2px] sm:-top-[2px] xs:-top-[2px] left-0' 
                         style={{ left: `calc(${displayVolume * 100}% - 0.4rem)` }}
                         onMouseDown={handleVolumeMouseDown}
                         onMouseUp={handleVolumeMouseUp}
@@ -370,7 +400,7 @@ function Uploader() {
                   </div>
                 }
                 <span 
-                  className='w-9 h-5 ml-12 lg:ml-7 0.25lg:ml-10 sm:ml-7 xs:ml-6 xxs:ml-4 text-sm xs:!text-xs xxs:!text-[0.65rem] mt-1 xxs:mt-[2px] flex justify-start select-none dark:text-white' 
+                  className='w-9 h-5 ml-12 lg:ml-7 0.25lg:ml-10 sm:ml-7 xs:ml-6 xxs:ml-4 text-sm xs:!text-xs xxs:!text-[0.65rem] mt-1 xxs:mt-[2px] flex justify-start select-none dark:text-white font-semibold' 
                   onDragStart={(e) => e.preventDefault()}
                 >
                 { audioRef.current ? formatTime(time.current) : '0:00' }
@@ -380,7 +410,7 @@ function Uploader() {
                   <button
                     type='button'
                     title={`${isPlaying ? 'Pause' : 'Play'}`}
-                    className='text-5xl lg:!text-4xl xs:!text-3xl xxs:!text-2xl mt-3 hover:text-primary dark:text-white dark:hover:text-primaryDark'
+                    className='text-5xl lg:!text-4xl xs:!text-3xl xxs:!text-2xl mt-4 hover:text-primary dark:text-white dark:hover:text-primaryDark'
                     onClick={(e) => { 
                       e.stopPropagation(); 
                       handlePlayPause(); 
@@ -390,7 +420,7 @@ function Uploader() {
                   </button>
                 }
                 <span 
-                  className='w-9 h-5 mr-12 lg:mr-7 0.25lg:mr-10 sm:mr-7 xs:mr-6 xxs:mr-4 text-sm xs:!text-xs xxs:!text-[0.65rem] mt-1 xxs:mt-[2px] flex justify-end select-none dark:text-white'
+                  className='w-9 h-5 mr-12 lg:mr-7 0.25lg:mr-10 sm:mr-7 xs:mr-6 xxs:mr-4 text-sm xs:!text-xs xxs:!text-[0.65rem] mt-1 xxs:mt-[2px] flex justify-end select-none dark:text-white font-semibold'
                   onDragStart={(e) => e.preventDefault()}
                 >
                 { audioRef.current ? `-${formatTime(time.remaining)}` : '0:00' }
@@ -414,15 +444,14 @@ function Uploader() {
               >
                 <Image className='mb-3 pb-2 dark:filter dark:invert w-32 h-32 md:w-24 md:h-24' src={uploadImage} alt='' />
                 <p 
-                  className='font-medium 1.25xl:text-[0.95rem] 0.75xl:text-[0.9rem] 0.5xl:text-[0.85rem] 0.25xl:text-[0.8rem] lg:text-[0.75rem] 
-                  0.25lg:text-[0.9rem] sm:text-[0.8rem] xs:hidden'
+                  className='font-medium text-lg 1.25xl:text-[1rem] sm:text-[0.9rem] xs:hidden'
                 >Browse or drag an audio file to upload</p>
               </span>
             </>
           }
         </form>
         <form
-          className='relative h-96 w-2/5 lg:h-80 lg:w-[48%] 0.25lg:w-4/5 xs:h-64 xs:w-full xxs:h-52 flex flex-col justify-center items-center border-4 
+          className='relative h-[400px] w-2/5 lg:h-80 lg:w-[48%] 0.25lg:w-4/5 xs:h-64 xs:w-full xxs:h-52 flex flex-col justify-center items-center border-4 
           border-dashed border-primary dark:border-primaryDark rounded-md mb-1 bg-yellow-100 dark:bg-green-900 ml-2 0.25lg:ml-0 0.25lg:mt-2 
           md:self-center'
         >
@@ -432,8 +461,7 @@ function Uploader() {
           >
             <Image className='dark:filter dark:invert w-36 h-36 md:w-28 md:h-28' src={generateImage} alt='' />
             <p 
-              className='font-medium mt-1 1.25xl:text-[0.95rem] 0.75xl:text-[0.9rem] 0.5xl:text-[0.85rem] 0.25xl:text-[0.8rem] lg:text-[0.75rem] 
-              0.25lg:text-[0.9rem] sm:text-[0.8rem] xs:hidden'
+              className='font-medium mt-1 text-lg 1.25xl:text-[1rem] sm:text-[0.9rem] xs:hidden'
             >Generated Music</p>
           </span>
         </form>
@@ -493,6 +521,7 @@ function Uploader() {
         className='flex items-center bg-dark text-light p-2.5 px-6 mt-3 rounded-lg text-lg font-semibold hover:bg-light hover:text-dark 
         border-2 border-solid border-transparent hover:border-dark dark:bg-light dark:text-dark hover:dark:bg-dark 
       hover:dark:text-light hover:dark:border-light 0.75xl:text-base md:text-sm'
+        onClick={handleGenerateClick}
       >Generate</button>
     </main>
   );

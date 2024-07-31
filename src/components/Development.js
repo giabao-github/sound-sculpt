@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { motion, useScroll } from 'framer-motion';
-import DevelopementIcons from './DevelopementIcons';
+import DevelopmentIcons from './DevelopmentIcons';
 import Link from 'next/link';
 
 const Details = ({development, subject, link, time, description}) => {
   const ref = useRef(null);
   return (
     <li ref={ref} className='my-8 first:mt-0 last:mb-0 w-[60%] md:w-[80%] mx-auto flex flex-col items-center justify-between'>
-      <DevelopementIcons reference={ref} />
+      <DevelopmentIcons reference={ref} />
       <motion.div
         initial={{ y: 50 }}
         whileInView={{ y: 0 }}
@@ -45,7 +45,7 @@ function Development() {
       <div ref={ref} className='w-[75%] lg:w-[90%] md:w-full mx-auto relative'>
         <motion.div 
           style={{scaleY: scrollYProgress}} 
-          className={`absolute left-7 md:left-[30px] top-[2px] w-[4px] md:w-[2px] h-full bg-dark dark:bg-light origin-top xs:hidden`}
+          className={`absolute left-[34px] md:left-[28px] top-[2px] w-[4px] md:w-[3px] h-full bg-dark dark:bg-light origin-top xs:hidden`}
         />
         <ul className='w-full flex flex-col items-start justify-between ml-4 xs:ml-2'>
           <Details

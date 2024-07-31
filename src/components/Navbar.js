@@ -10,7 +10,7 @@ const CustomLink = ({ href, title, className='' }) => {
   const router = useRouter();
 
   return (
-    <Link href={href} className={`${className} relative group`}>
+    <Link href={href} className={`${className} relative group font-semibold`}>
       {title}
       <span className={
         `h-[2px] inline-block bg-dark dark:bg-light absolute left-1/2 -bottom-0.5 transform -translate-x-1/2 group-hover:w-full 
@@ -31,7 +31,7 @@ const CustomLinkMobile = ({ href, title, className='', toggle }) => {
   }
 
   return (
-    <button href={href} className={`${className} relative group text-light dark:text-dark my-2`} onClick={handleClick}>
+    <button href={href} className={`${className} relative group font-semibold text-light dark:text-dark my-2`} onClick={handleClick}>
       {title}
       <span className={
         `h-[2px] inline-block bg-light dark:bg-dark absolute left-1/2 -bottom-0.5 transform -translate-x-1/2 group-hover:w-full 
@@ -75,10 +75,10 @@ function Navbar() {
       
       <div className='w-full flex justify-between items-center'>
         <nav className='lg:hidden'>
-          <CustomLink href='/' title="Home" className='mr-4'/>
-          <CustomLink href='/about' title="About" className='mx-4' />
-          <CustomLink href='/generate' title="Generate Music" className='mx-4' />
-          <CustomLink href='/articles' title="Articles" className='ml-4' />
+          <CustomLink href='/' title="Home" className='mr-4 text-xl'/>
+          <CustomLink href='/about' title="About" className='mx-4 text-xl' />
+          <CustomLink href='/generate' title="Generate Music" className='mx-4 text-xl' />
+          <CustomLink href='/articles' title="Articles" className='ml-4 text-xl' />
         </nav>
         <div className='flex items-center justify-center relative  lg:left-1/2 transform lg:-translate-x-1/2 -translate-y-1 lg:pr-4 xs:pr-5'>
             <Logo />
@@ -120,10 +120,10 @@ function Navbar() {
           animate={{ scale: 1, opacity: 1 }}
           className='min-w-[70vw] xs:min-w-[80vw] flex flex-col justify-between items-center fixed z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-dark/75 dark:bg-light/75 rounded-lg backdrop-blur-md py-12 xxs:py-8'>
           <nav className='flex flex-col justify-center items-center 0.25lg:!text-lg sm:!text-base xs:!text-sm'>
-            <CustomLinkMobile href='/' title="Home" className='' toggle={handleClick} />
-            <CustomLinkMobile href='/about' title="About" className='' toggle={handleClick} />
-            <CustomLinkMobile href='/generate' title="Generate Music" className='' toggle={handleClick} />
-            <CustomLinkMobile href='/articles' title="Articles" className='' toggle={handleClick} />
+            <CustomLinkMobile href='/' title="Home" className='text-xl' toggle={handleClick} />
+            <CustomLinkMobile href='/about' title="About" className='text-xl' toggle={handleClick} />
+            <CustomLinkMobile href='/generate' title="Generate Music" className='text-xl' toggle={handleClick} />
+            <CustomLinkMobile href='/articles' title="Articles" className='text-xl' toggle={handleClick} />
           </nav>
           <nav className='flex flex-wrap items-center justify-center mt-5 mb-3'>
             <div className='flex justify-center items-center xxs:w-full'>

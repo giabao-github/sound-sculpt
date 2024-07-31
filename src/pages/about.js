@@ -33,7 +33,7 @@ const AnimatedNumbers = ({value}) => {
   return <span ref={ref}></span>
 }
 
-function about() {
+function About() {
   return (
     <>
       <Head>
@@ -46,14 +46,14 @@ function about() {
           <AnimatedText text='A magical music tool!' className='mt-8 mb-16 lg:!text-7xl sm:!text-6xl sm:!mb-8 xs:!text-4xl' />
           <div className='grid w-full grid-cols-8 gap-16 sm:gap-8'>
             <div className='col-span-3 xl:col-span-4 md:order-2 md:col-span-8 flex flex-col items-start justify-start'>
-              <h2 className='mb-4 text-lg font-bold uppercase text-dark/75 dark:text-light/75'>Introduction</h2>
-              <p className='font-medium'>
+              <h2 className='mb-4 text-xl font-bold uppercase text-dark/75 dark:text-light/75'>Introduction</h2>
+              <p className='font-medium text-xl md:text-base'>
               Welcome to our unique music transformation platform! Here, we breathe life into your musical ideas by transforming your audio files based on your descriptions. Whether it is pop, rock, or jazz, played with guitar or light drums, we have got you covered.
               </p>
-              <p className='my-4 font-medium'>
+              <p className='my-4 font-medium text-xl md:text-base'>
               Our tool is designed with simplicity and efficiency in mind. All you need to do is upload your audio file, provide a description of your desired style, and let our tool do the magic. It is as simple as that!
               </p>
-              <p className='font-medium'>
+              <p className='font-medium text-xl md:text-base'>
               Experience the joy of creating music like never before. With our platform, you are not just a listener, but an active participant in the music creation process. Join us and let us make music together!
               </p>
             </div>
@@ -95,4 +95,4 @@ function about() {
   );
 }
 
-export default about;
+export default About;

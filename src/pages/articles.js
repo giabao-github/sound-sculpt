@@ -81,12 +81,11 @@ const FeaturedArticle = ({image, title, time, summary, link, id, setState }) => 
     };
   }
 
-  const toggleExpanded = useCallback(
+  const toggleExpanded = useCallback(() => {
     debounce(() => {
       setIsExpanded((prevState) => !prevState);
-    }, 100),
-    []
-  );
+    }, 100)();
+  }, []);
 
   useEffect(() => {
     setState(id, isExpanded);
@@ -100,7 +99,7 @@ const FeaturedArticle = ({image, title, time, summary, link, id, setState }) => 
         element.textContent = text;
       }
     }
-  }, [summary, isExpanded, id, setIsExpanded]);
+  }, [summary, isExpanded, id, setIsExpanded, setState]);
 
   return(
     <li className='relative col-span-1 w-full p-4 bg-light dark:bg-dark border border-solid border-dark dark:border-light rounded-2xl'>
@@ -133,7 +132,7 @@ const FeaturedArticle = ({image, title, time, summary, link, id, setState }) => 
   );
 }
 
-function articles() {
+function Articles() {
   const [firstState, setFirstState] = useState(false);
   const [secondState, setSecondState] = useState(false);
 
@@ -215,4 +214,4 @@ function articles() {
   );
 }
 
-export default articles;
+export default Articles;

@@ -2,9 +2,9 @@ import Layout from '@/components/Layout';
 import TransitionEffect from '@/components/TransitionEffect';
 import Uploader from '@/components/Uploader';
 import Head from 'next/head';
-import { React, useState } from 'react';
+import { React } from 'react';
 
-function generate() {
+function Generate() {
   return (
     <>
       <Head>
@@ -21,4 +21,4 @@ function generate() {
   );
 }
 
-export default generate;
+export default Generate;
