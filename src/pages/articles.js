@@ -11,6 +11,8 @@ import article3 from '../../public/images/articles/equipping musicgen with chord
 import article4 from '../../public/images/articles/muspy - a toolkit for symbolic music generation.png';
 import article5 from '../../public/images/articles/incorporating music knowledge in continual dataset augmentation for music generation.png';
 import article6 from '../../public/images/articles/nonoto - a model-agnostic web interface for interactive music composition by inpainting.png';
+import book1 from '../../public/images/articles/d2l.png';
+import book2 from '../../public/images/articles/deep learning.jpg';
 import article7 from '../../public/images/articles/transfer learning for underrepresented music generation.png';
 import TransitionEffect from '@/components/TransitionEffect';
 
@@ -103,7 +105,7 @@ const FeaturedArticle = ({image, title, time, summary, link, id, setState }) => 
 
   return(
     <li className='relative col-span-1 w-full p-4 bg-light dark:bg-dark border border-solid border-dark dark:border-light rounded-2xl'>
-      <div className='absolute top-0 -right-3 -z-10 w-[101.75%] h-[101.75%] xl:w-[102.75%] xl:h-[102%] lg:w-[101.75%] lg:h-[101.25%] xs:w-[103%] 
+      <div className='absolute top-0 -right-4 -z-10 w-[101.75%] h-[101.75%] xl:w-[102.75%] xl:h-[102%] lg:w-[101.75%] lg:h-[101.25%] xs:w-[103%] 
       xs:h-[102%] xs:-right-2 xs:-top-[1px] rounded-[2rem] bg-dark dark:bg-light rounded-br-3xl' />
       <Link
         href={link}
@@ -175,7 +177,7 @@ function Articles() {
               setState={setState}
             />
           </ul>
-          <h2 className='font-bold text-4xl xl:!text-3xl xs:!text-2xl w-full text-center mb-8 mt-32 dark:text-light'>All Articles</h2>
+          <h2 className='font-bold text-4xl xl:!text-3xl xs:!text-2xl w-full text-center mb-8 mt-32 dark:text-light'>Other Articles</h2>
           <ul className='pb-8'>
             <Article
               title='Equipping MusicGen with Chord and Rhythm Controls'
@@ -206,6 +208,21 @@ function Articles() {
               date='July 23, 2019'
               link='https://arxiv.org/pdf/1907.10380.pdf'
               image={article6}
+            />
+          </ul>
+          <h2 className='font-bold text-4xl xl:!text-3xl xs:!text-2xl w-full text-center mb-8 mt-32 dark:text-light'>References</h2>
+          <ul className='mb-32'>
+            <Article
+              title='Dive into Deep Learning'
+              date='February, 2023'
+              link='https://d2l.ai/'
+              image={book1}
+            />
+            <Article
+              title='Deep Learning Cơ Bản - v2'
+              date='August, 2020'
+              link='https://drive.google.com/file/d/1lNjzISABdoc7SRq8tg-xkCRRZRABPCKi/view'
+              image={book2}
             />
           </ul>
         </Layout>

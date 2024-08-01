@@ -10,6 +10,7 @@ function Uploader() {
   let progressMousedown, volumeMousedown = false;
   const audioRef = useRef(null);
   const animationFrameRef = useRef(null);
+  const volumeAnimationFrameRef = useRef(null);
   const [audio, setAudio] = useState(null);
   const [fileName, setFileName] = useState("No files chosen");
   const [artwork, setArtwork] = useState(null);
@@ -19,9 +20,9 @@ function Uploader() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [continuePlaying, setContinuePlaying] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
-  const [volume, setVolume] = useState(1);
+  const [volume, setVolume] = useState(0.5);
   const [isMuted, setIsMuted] = useState(false);
-  const [displayVolume, setDisplayVolume] = useState(1);
+  const [displayVolume, setDisplayVolume] = useState(0.5);
   const [input, setInput] = useState('');
 
   // Upload files and set artworks
@@ -142,31 +143,39 @@ function Uploader() {
   };
 
   // Volume bar
-  const handleVolumeMouseMove = (e) => {
+  const handleVolumeMouseMove = useCallback((e) => {
     if (!volumeMousedown) {
       return;
     }
-    const volumeBar = document.querySelector('.volume-control-container');
-    const rect = volumeBar.getBoundingClientRect();
-    let x = e.clientX - rect.left;
-    if (x < 0 || x > rect.width) {
-      return;
+
+    // Use requestAnimationFrame for smoother updates
+    if (volumeAnimationFrameRef.current) {
+      cancelAnimationFrame(volumeAnimationFrameRef.current);
     }
-    x = Math.max(x, 0)
-    x = Math.min(x, rect.width);
-    const newVolume = x / rect.width;
-    setVolume(newVolume);
-    setDisplayVolume(newVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
-      if (audioRef.current.muted) {
-        audioRef.current.muted = false;
-        setIsMuted(false);
+
+    volumeAnimationFrameRef.current = requestAnimationFrame(() => {
+      const volumeBar = document.querySelector('.volume-control-container');
+      const rect = volumeBar.getBoundingClientRect();
+      let x = e.clientX - rect.left;
+      if (x < 0 || x > rect.width) {
+        return;
       }
-    }
-  };
+      x = Math.max(x, 0);
+      x = Math.min(x, rect.width);
+      const newVolume = x / rect.width;
+      setVolume(newVolume);
+      setDisplayVolume(newVolume);
+      if (audioRef.current) {
+        audioRef.current.volume = newVolume;
+        if (audioRef.current.muted) {
+          audioRef.current.muted = false;
+        }
+      }
+    });
+  }, [volumeMousedown]);
 
   const handleVolumeMouseDown = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     volumeMousedown = true;
     window.addEventListener('mousemove', handleVolumeMouseMove);
@@ -188,6 +197,7 @@ function Uploader() {
     if (x < 0 || x > rect.width) {
       return;
     }
+
     x = Math.max(x, 0)
     x = Math.min(x, rect.width);
     const newVolume = x / rect.width;
@@ -282,7 +292,7 @@ function Uploader() {
   };
 
 
-  // useEffect
+  // useEffects
   useEffect(() => {
     if (audioRef.current) {
       updateTime();
@@ -298,6 +308,7 @@ function Uploader() {
       audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
       audioRef.current.addEventListener('ended', handleAudioEnd);
 
+      // Update time and progress every 0.5 seconds
       const interval = setInterval(() => {
         if (audioRef.current && !isNaN(audioRef.current.duration)) {
           updateTime();
@@ -312,26 +323,39 @@ function Uploader() {
           audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
           audioRef.current.removeEventListener('ended', handleAudioEnd);
           cancelAnimationFrame(animationFrameRef.current);
-          clearInterval(interval)
+          clearInterval(interval);
         }
       };
     }
   }, [updateTime, handleTimeUpdate, audioRef]);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      if (audioRef.current && !isNaN(audioRef.current.duration)) {
+        updateTime();
+        handleTimeUpdate();
+        setProgress((audioRef.current.currentTime / audioRef.current.duration) * 100);
+      }
+    }, 500);
+
     if (audio) {
       document.title = `SoundSculpt | ${fileName.split('.').slice(0, -1).join('.')}`;
     }
     else {
       document.title = 'SoundSculpt | Generate Music';
     }
-  }, [audio, fileName, time.remaining]);
+
+    return () => {
+      clearInterval(interval);
+    }
+  }, [audio, fileName, handleTimeUpdate, updateTime]);
 
   useEffect(() => {
     if (audioRef.current) {
-      setTime({ current: audioRef.current.currentTime, remaining: audioRef.current.duration - audioRef.current.currentTime })
+      audioRef.current.volume = volume;
+      setTime({ current: audioRef.current.currentTime, remaining: audioRef.current.duration - audioRef.current.currentTime });
     }
-  }, [])
+  }, [volume])
 
   return (
     <main className='w-full flex flex-col items-center justify-between'>
@@ -371,7 +395,7 @@ function Uploader() {
                   onDragStart={(e) => e.preventDefault()}
                 ></div>
               </div>
-              <div className='w-full flex justify-between' draggable='false'>
+              <div className='w-full flex justify-between'>
                 {
                   audio &&
                   <div className='w-1/5 lg:w-1/4 0.25lg:w-1/5 sm:w-1/4 absolute left-12 lg:left-7 0.25lg:left-10 sm:left-7 xs:left-6 xxs:left-4 bottom-5 md:bottom-4 xxs:bottom-2 flex items-center'>
@@ -380,11 +404,11 @@ function Uploader() {
                       title={`${isMuted ? 'Turn on sound' : 'Mute'}`}
                       className='text-xl sm:!text-base mr-3 lg:mr-2 0.25lg:mr-[12px] hover:text-primary dark:text-white dark:hover:text-primaryDark'
                       onClick={handleMute}
-                      onDragStart={(e) => e.preventDefault()}
                     >{isMuted ? <FaVolumeXmark/> : <FaVolumeHigh/>}
                     </button>
-                    <div 
-                      className='volume-control-container w-full h-1 bg-gray-300 dark:bg-gray-400 cursor-pointer rounded-md relative xs:hidden' 
+                    <div
+                      title={`Volume: ${Math.floor(displayVolume * 100) }%`}
+                      className='volume-control-container w-full h-1 bg-gray-300 dark:bg-gray-400 cursor-pointer rounded-md relative xs:hidden'
                       onClick={handleVolumeChange}>
                       <div 
                         className='volume-bar h-1 bg-blue-500 dark:bg-blue-400 rounded-md absolute' style={{ width: `${displayVolume * 100}%` }}
@@ -393,8 +417,8 @@ function Uploader() {
                         className='h-2 w-2 bg-blue-500 dark:bg-blue-400 rounded-full absolute -top-[2px] sm:-top-[2px] xs:-top-[2px] left-0' 
                         style={{ left: `calc(${displayVolume * 100}% - 0.4rem)` }}
                         onMouseDown={handleVolumeMouseDown}
-                        onMouseUp={handleVolumeMouseUp}
                         onDragStart={(e) => e.preventDefault()}
+                        draggable={true}
                       ></div>
                     </div>
                   </div>
